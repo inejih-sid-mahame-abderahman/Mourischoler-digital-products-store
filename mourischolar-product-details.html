@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saudi Scholarship Master Guide — MouriScholar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Cairo:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#111827; --ink-soft:#4B5563; --cream:#FDFBF6; --surface:#F9FAFB; --border:#E5E7EB;
+    --orange:#F97316; --amber:#FB923C; --gold:#D4AF37; --blue:#2563EB; --success:#22C55E; --white:#FFFFFF;
+    --font-head:'Manrope', sans-serif; --font-body:'Inter', sans-serif; --radius:20px; --container:1160px;
+  }
+  body.lang-ar{ --font-head:'Cairo', sans-serif; --font-body:'Cairo', sans-serif; }
+  *{box-sizing:border-box;}
+  body{ margin:0; font-family:var(--font-body); color:var(--ink); background:var(--cream); -webkit-font-smoothing:antialiased; }
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  button,input,textarea{font-family:inherit;}
+  h1,h2,h3,h4{font-family:var(--font-head); margin:0; letter-spacing:-0.02em; line-height:1.15;}
+  p{margin:0;}
+  .wrap{max-width:var(--container); margin:0 auto; padding:0 28px;}
+  .icon{width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0;}
+
+  /* NAV */
+  header{ position:sticky; top:0; z-index:100; background:rgba(253,251,246,0.9); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); }
+  nav.wrap{ display:flex; align-items:center; justify-content:space-between; height:78px; }
+  .brand{ display:flex; align-items:center; gap:10px; font-family:var(--font-head); font-weight:800; font-size:1.28rem; }
+  .brand-mark{ width:34px; height:34px; border-radius:9px; background:linear-gradient(140deg,var(--orange),var(--amber)); display:flex; align-items:center; justify-content:center; color:#fff; }
+  .brand-mark svg{width:19px;height:19px;}
+  .nav-links{ display:flex; align-items:center; gap:34px; font-size:0.95rem; font-weight:600; color:var(--ink-soft); }
+  .nav-links a.active{ color:var(--ink); }
+  .nav-links a:hover{ color:var(--ink); }
+  .nav-right{ display:flex; align-items:center; gap:16px; }
+  .lang-switch{ display:flex; background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:3px; gap:2px; }
+  .lang-switch button{ border:none; background:transparent; padding:6px 12px; border-radius:999px; font-size:0.8rem; font-weight:700; color:var(--ink-soft); cursor:pointer; }
+  .lang-switch button.active{ background:var(--ink); color:#fff; }
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:13px 22px; border-radius:11px; font-weight:700; font-size:0.93rem; border:1.5px solid transparent; white-space:nowrap; cursor:pointer; transition:transform .15s ease, box-shadow .15s ease, background .15s ease; }
+  .btn:active{ transform:scale(0.97); }
+  .btn-primary{ background:var(--orange); color:#fff; box-shadow:0 8px 20px -8px rgba(249,115,22,0.6); }
+  .btn-primary:hover{ background:#EA6A0E; }
+  .btn-outline{ background:transparent; border:1.5px solid var(--border); color:var(--ink); }
+  .btn-outline:hover{ background:var(--surface); }
+  .btn-block{ width:100%; }
+
+  /* BREADCRUMB */
+  .crumb-bar{ padding:20px 0; font-size:0.85rem; color:var(--ink-soft); display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+  .crumb-bar .cur{ color:var(--ink); font-weight:600; }
+  .crumb-bar a:hover{ color:var(--orange); }
+
+  /* GALLERY + BUY */
+  .pdp-top{ display:grid; grid-template-columns:1.15fr 0.85fr; gap:52px; padding-bottom:60px; align-items:start; }
+  .gallery-main{ border-radius:22px; height:400px; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; cursor:zoom-in; color:#fff; }
+  .gallery-main .zoom-hint{ position:absolute; bottom:16px; inset-inline-end:16px; background:rgba(0,0,0,0.35); backdrop-filter:blur(6px); padding:8px 12px; border-radius:999px; font-size:0.76rem; font-weight:600; display:flex; align-items:center; gap:6px; }
+  .gallery-thumbs{ display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-top:12px; }
+  .thumb{ height:66px; border-radius:11px; cursor:pointer; border:2px solid transparent; opacity:0.6; transition:opacity .15s, border-color .15s; display:flex; align-items:center; justify-content:center; color:#fff; }
+  .thumb.active{ opacity:1; border-color:var(--ink); }
+  .thumb svg{ width:20px; height:20px; }
+
+  .lightbox{ position:fixed; inset:0; background:rgba(17,24,39,0.92); z-index:1000; display:none; align-items:center; justify-content:center; padding:40px; cursor:zoom-out; }
+  .lightbox.open{ display:flex; }
+  .lightbox-inner{ width:min(700px, 90vw); height:min(500px, 70vh); border-radius:20px; display:flex; align-items:center; justify-content:center; color:#fff; }
+  .lightbox-close{ position:absolute; top:24px; inset-inline-end:24px; width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.12); display:flex; align-items:center; justify-content:center; color:#fff; }
+
+  .buy-panel{ position:sticky; top:98px; background:#fff; border:1px solid var(--border); border-radius:22px; padding:30px; box-shadow:0 24px 50px -30px rgba(17,24,39,0.2); }
+  .buy-cat{ display:inline-block; background:rgba(249,115,22,0.1); color:var(--orange); font-size:0.75rem; font-weight:700; padding:5px 12px; border-radius:999px; margin-bottom:14px; }
+  .buy-panel h1{ font-size:1.5rem; margin-bottom:12px; }
+  .buy-rating{ display:flex; align-items:center; gap:10px; margin-bottom:18px; font-size:0.88rem; color:var(--ink-soft); }
+  .stars{ display:flex; align-items:center; gap:2px; color:var(--gold); }
+  .stars svg{ width:15px; height:15px; }
+  .buy-price-row{ display:flex; align-items:baseline; gap:10px; margin-bottom:20px; }
+  .buy-price{ font-family:var(--font-head); font-size:2.1rem; font-weight:800; }
+  .buy-price-old{ text-decoration:line-through; color:#9CA3AF; font-size:1rem; }
+  .feature-list{ display:flex; flex-direction:column; gap:11px; margin-bottom:24px; }
+  .feature-list div{ display:flex; align-items:center; gap:10px; font-size:0.89rem; color:var(--ink-soft); }
+  .feature-list svg{ color:var(--success); width:17px; height:17px; flex-shrink:0; }
+  .buy-actions{ display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+  .buy-trust{ display:flex; align-items:center; gap:8px; font-size:0.78rem; color:#9CA3AF; justify-content:center; }
+
+  /* SECTIONS */
+  .pdp-section{ padding:50px 0; border-top:1px solid var(--border); }
+  .pdp-section h2{ font-size:1.55rem; margin-bottom:20px; }
+  .pdp-body{ display:grid; grid-template-columns:1fr 320px; gap:60px; }
+  .prose p{ color:var(--ink-soft); line-height:1.75; font-size:1rem; margin-bottom:16px; }
+  .prose p:last-child{ margin-bottom:0; }
+
+  .spec-sheet{ background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:26px; height:fit-content; }
+  .spec-row{ display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--border); font-size:0.89rem; }
+  .spec-row:last-child{ border-bottom:none; }
+  .spec-row .k{ color:var(--ink-soft); }
+  .spec-row .v{ font-weight:700; text-align:end; }
+
+  .learn-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .learn-item{ display:flex; align-items:flex-start; gap:12px; background:#fff; border:1px solid var(--border); border-radius:14px; padding:16px; }
+  .learn-item .num{ width:26px; height:26px; border-radius:50%; background:rgba(249,115,22,0.1); color:var(--orange); font-family:var(--font-head); font-weight:800; font-size:0.8rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .learn-item p{ font-size:0.9rem; color:var(--ink); line-height:1.5; }
+
+  .who-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .who-card{ background:#fff; border:1px solid var(--border); border-radius:16px; padding:22px; }
+  .who-card .ic{ width:38px; height:38px; border-radius:10px; background:var(--surface); color:var(--orange); display:flex; align-items:center; justify-content:center; margin-bottom:14px; }
+  .who-card h4{ font-size:0.98rem; margin-bottom:6px; }
+  .who-card p{ font-size:0.86rem; color:var(--ink-soft); line-height:1.5; }
+
+  /* consultation */
+  .consult-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .consult-card{ border-radius:18px; padding:26px; color:#fff; position:relative; overflow:hidden; }
+  .consult-card .ic{ width:42px; height:42px; border-radius:11px; background:rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
+  .consult-card h4{ font-size:1.08rem; margin-bottom:8px; }
+  .consult-card p{ font-size:0.88rem; color:rgba(255,255,255,0.85); line-height:1.55; }
+
+  .receipt{ background:#fff; border:1px solid var(--border); border-radius:20px; max-width:600px; padding:32px 36px; }
+  .receipt-item{ display:flex; align-items:center; gap:14px; padding:11px 0; border-bottom:1px dashed var(--border); }
+  .receipt-item:last-child{ border-bottom:none; }
+  .receipt-item .chk{ width:20px; height:20px; border-radius:50%; background:rgba(34,197,94,0.12); color:var(--success); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .receipt-item .chk svg{ width:12px; height:12px; }
+  .receipt-item span{ font-size:0.92rem; font-weight:500; }
+
+  /* FAQ (shared pattern) */
+  .faq{ max-width:100%; }
+  .faq-item{ border-bottom:1px solid var(--border); }
+  .faq-q{ width:100%; background:none; border:none; padding:20px 4px; display:flex; align-items:center; justify-content:space-between; text-align:start; font-family:var(--font-head); font-weight:700; font-size:1rem; color:var(--ink); cursor:pointer; }
+  .faq-q svg{ transition:transform .2s ease; flex-shrink:0; color:var(--orange); }
+  .faq-item.open .faq-q svg{ transform:rotate(180deg); }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .25s ease; }
+  .faq-item.open .faq-a{ max-height:200px; }
+  .faq-a p{ padding:0 4px 20px; color:var(--ink-soft); font-size:0.92rem; line-height:1.6; }
+
+  /* REVIEWS */
+  .review-summary{ display:flex; align-items:center; gap:30px; margin-bottom:36px; flex-wrap:wrap; }
+  .review-score{ text-align:center; }
+  .review-score .n{ font-family:var(--font-head); font-size:3rem; font-weight:800; }
+  .review-bars{ flex:1; min-width:220px; display:flex; flex-direction:column; gap:6px; }
+  .review-bar-row{ display:flex; align-items:center; gap:10px; font-size:0.8rem; color:var(--ink-soft); }
+  .review-bar-row .track{ flex:1; height:7px; background:var(--border); border-radius:99px; overflow:hidden; }
+  .review-bar-row .fill{ height:100%; background:var(--gold); }
+  .review-list{ display:flex; flex-direction:column; gap:22px; margin-bottom:36px; }
+  .review-card{ border:1px solid var(--border); border-radius:16px; padding:22px; background:#fff; }
+  .review-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .review-person{ display:flex; align-items:center; gap:12px; }
+  .review-avatar{ width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:0.8rem; font-family:var(--font-head); }
+  .review-name{ font-weight:700; font-size:0.92rem; }
+  .review-loc{ font-size:0.78rem; color:var(--ink-soft); }
+  .review-date{ font-size:0.78rem; color:#9CA3AF; }
+  .review-text{ font-size:0.92rem; color:var(--ink-soft); line-height:1.6; }
+
+  .review-form{ border:1px solid var(--border); border-radius:20px; padding:30px; background:var(--surface); }
+  .review-form h3{ font-size:1.15rem; margin-bottom:6px; }
+  .review-form .hint{ font-size:0.85rem; color:var(--ink-soft); margin-bottom:22px; }
+  .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+  .form-group{ display:flex; flex-direction:column; gap:6px; }
+  .form-group label{ font-size:0.82rem; font-weight:700; }
+  .form-group input, .form-group textarea{ border:1.5px solid var(--border); border-radius:10px; padding:11px 13px; font-size:0.9rem; background:#fff; outline:none; }
+  .form-group input:focus, .form-group textarea:focus{ border-color:var(--orange); }
+  .star-input{ display:flex; gap:6px; }
+  .star-input svg{ width:26px; height:26px; cursor:pointer; color:var(--border); transition:color .1s; }
+  .star-input svg.on{ color:var(--gold); }
+  .captcha-box{ display:flex; align-items:center; gap:10px; background:#fff; border:1.5px solid var(--border); border-radius:10px; padding:13px 16px; margin:16px 0; cursor:pointer; user-select:none; }
+  .captcha-box .chk{ width:22px; height:22px; border-radius:5px; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .captcha-box.checked .chk{ background:var(--success); border-color:var(--success); color:#fff; }
+  .captcha-box .chk svg{ width:13px; height:13px; opacity:0; }
+  .captcha-box.checked .chk svg{ opacity:1; }
+  .form-success{ display:none; align-items:center; gap:10px; background:rgba(34,197,94,0.1); color:#15803D; padding:14px 16px; border-radius:10px; font-size:0.88rem; font-weight:600; margin-top:14px; }
+  .form-success.show{ display:flex; }
+
+  /* SIMILAR */
+  .similar-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .product-card{ background:#fff; border:1px solid var(--border); border-radius:18px; overflow:hidden; transition:box-shadow .2s, transform .2s; }
+  .product-card:hover{ box-shadow:0 18px 36px -20px rgba(17,24,39,0.2); transform:translateY(-3px); }
+  .product-cover{ height:130px; position:relative; display:flex; align-items:center; justify-content:center; color:#fff; }
+  .product-cover .cat{ position:absolute; top:12px; inset-inline-start:12px; background:rgba(255,255,255,0.22); backdrop-filter:blur(6px); font-size:0.66rem; font-weight:700; padding:5px 10px; border-radius:999px; }
+  .product-body{ padding:18px; }
+  .product-title{ font-family:var(--font-head); font-weight:700; font-size:0.98rem; margin-bottom:10px; }
+  .product-foot{ display:flex; align-items:center; justify-content:space-between; }
+  .price{ font-family:var(--font-head); font-weight:800; font-size:1.05rem; }
+
+  /* STICKY MOBILE BUY BAR */
+  .sticky-buy{ display:none; position:fixed; bottom:0; inset-inline-start:0; inset-inline-end:0; background:#fff; border-top:1px solid var(--border); padding:14px 20px; z-index:200; align-items:center; justify-content:space-between; gap:14px; box-shadow:0 -8px 24px -12px rgba(17,24,39,0.15); }
+  .sticky-buy .p{ font-family:var(--font-head); font-weight:800; font-size:1.2rem; }
+
+  footer{ padding:50px 0 100px; border-top:1px solid var(--border); text-align:center; color:var(--ink-soft); font-size:0.88rem; }
+  footer a{ color:var(--orange); font-weight:600; }
+
+  @media (max-width: 980px){
+    .nav-links{ display:none; }
+    .pdp-top{ grid-template-columns:1fr; }
+    .buy-panel{ position:static; }
+    .pdp-body{ grid-template-columns:1fr; }
+    .learn-grid{ grid-template-columns:1fr; }
+    .who-grid{ grid-template-columns:1fr; }
+    .consult-grid{ grid-template-columns:1fr; }
+    .similar-grid{ grid-template-columns:repeat(2,1fr); }
+    .form-row{ grid-template-columns:1fr; }
+    .sticky-buy{ display:flex; }
+    footer{ padding-bottom:110px; }
+  }
+  @media (max-width: 620px){
+    .wrap{ padding:0 20px; }
+    .gallery-main{ height:260px; }
+    .gallery-thumbs{ grid-template-columns:repeat(5,1fr); }
+    .similar-grid{ grid-template-columns:1fr; }
+    .review-summary{ flex-direction:column; align-items:flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <a href="mourischolar-home.html" class="brand">
+      <span class="brand-mark"><svg class="icon" viewBox="0 0 24 24"><path d="M22 10 12 4 2 10l10 6 10-6Z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></span>
+      MouriScholar
+    </a>
+    <div class="nav-links">
+      <a href="mourischolar-home.html" data-i18n="nav_home">Home</a>
+      <a href="mourischolar-products.html" class="active" data-i18n="nav_products">Products</a>
+      <a href="mourischolar-home.html#founder" data-i18n="nav_about">About</a>
+      <a href="mourischolar-home.html#faq" data-i18n="nav_faq">FAQ</a>
+    </div>
+    <div class="nav-right">
+      <div class="lang-switch" id="langSwitch">
+        <button data-lang="en" class="active">EN</button>
+        <button data-lang="fr">FR</button>
+        <button data-lang="ar">AR</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="wrap">
+  <div class="crumb-bar">
+    <a href="mourischolar-home.html" data-i18n="nav_home">Home</a><span>/</span>
+    <a href="mourischolar-products.html" data-i18n="nav_products">Products</a><span>/</span>
+    <span class="cur" data-i18n="p_title">Saudi Scholarship Master Guide</span>
+  </div>
+</div>
+
+<div class="wrap pdp-top">
+  <div>
+    <div class="gallery-main" id="galleryMain" style="background:linear-gradient(150deg, #F97316, #FB923C)">
+      <svg class="icon" viewBox="0 0 24 24" style="width:70px;height:70px;color:rgba(255,255,255,0.85)"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <div class="zoom-hint"><svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6M8 11h6"/></svg><span data-i18n="click_zoom">Click to zoom</span></div>
+    </div>
+    <div class="gallery-thumbs" id="galleryThumbs"></div>
+  </div>
+
+  <div class="buy-panel">
+    <span class="buy-cat" data-i18n="p_cat">Saudi Scholarships</span>
+    <h1 data-i18n="p_title">Saudi Scholarship Master Guide</h1>
+    <div class="buy-rating">
+      <span class="stars">★★★★★</span>
+      <span>4.9</span><span>·</span><span><span id="reviewCountLabel">312</span> <span data-i18n="reviews_word">reviews</span></span>
+    </div>
+    <div class="buy-price-row"><span class="buy-price">$19</span><span class="buy-price-old">$29</span></div>
+    <div class="feature-list">
+      <div><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="feat1">Instant PDF download</span></div>
+      <div><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="feat2">Lifetime free updates</span></div>
+      <div><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="feat3">WhatsApp support included</span></div>
+      <div><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="feat4">Editable CV & letter templates</span></div>
+    </div>
+    <div class="buy-actions">
+      <a href="mourischolar-payment.html" class="btn btn-primary btn-block" data-i18n="buy_whatsapp">Order via WhatsApp</a>
+      <a href="mourischolar-payment.html" class="btn btn-outline btn-block" data-i18n="buy_intl">International Payment</a>
+    </div>
+    <div class="buy-trust">
+      <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+      <span data-i18n="buy_trust">Secure manual payment · delivered by hand</span>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose"><svg class="icon" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  <div class="lightbox-inner" id="lightboxInner"></div>
+</div>
+
+<section class="pdp-section">
+  <div class="wrap pdp-body">
+    <div>
+      <h2 data-i18n="why_diff_h2">Why this guide is different</h2>
+      <div class="prose">
+        <p data-i18n="why_diff_p1">Most scholarship advice online is generic — the same five tips repeated across a hundred blog posts. This guide is built from a single, real, fully funded application: the exact documents that were submitted, the exact timeline that was followed, and the exact answers that were given in interviews.</p>
+        <p data-i18n="why_diff_p2">It is written for Saudi government-funded and university-funded programs specifically, so every recommendation accounts for how these committees actually evaluate candidates — not how a generic scholarship works.</p>
+      </div>
+    </div>
+    <div class="spec-sheet">
+      <div class="spec-row"><span class="k" data-i18n="spec_pages">Pages</span><span class="v">64</span></div>
+      <div class="spec-row"><span class="k" data-i18n="spec_lang">Language</span><span class="v" data-i18n="spec_lang_v">English, Arabic</span></div>
+      <div class="spec-row"><span class="k" data-i18n="spec_updated">Last Updated</span><span class="v" data-i18n="spec_updated_v">August 2026</span></div>
+      <div class="spec-row"><span class="k" data-i18n="spec_author">Author</span><span class="v">Amina Mouri</span></div>
+      <div class="spec-row"><span class="k" data-i18n="spec_format">Format</span><span class="v" data-i18n="spec_format_v">PDF + editable DOCX</span></div>
+      <div class="spec-row"><span class="k" data-i18n="spec_files">Included Files</span><span class="v">6</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="pdp-section">
+  <div class="wrap">
+    <h2 data-i18n="learn_h2">What you'll learn</h2>
+    <div class="learn-grid">
+      <div class="learn-item"><span class="num">1</span><p data-i18n="learn1">How to check your eligibility before spending time on an application that won't qualify.</p></div>
+      <div class="learn-item"><span class="num">2</span><p data-i18n="learn2">How to structure a motivation letter that actually gets read by a committee.</p></div>
+      <div class="learn-item"><span class="num">3</span><p data-i18n="learn3">Which supporting documents matter most, and which are commonly over-prepared.</p></div>
+      <div class="learn-item"><span class="num">4</span><p data-i18n="learn4">How to prepare for a scholarship interview using real questions from past panels.</p></div>
+      <div class="learn-item"><span class="num">5</span><p data-i18n="learn5">The visa steps to start in parallel so you don't lose time after acceptance.</p></div>
+      <div class="learn-item"><span class="num">6</span><p data-i18n="learn6">How to plan your first three months in Saudi Arabia as a new scholarship student.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="pdp-section">
+  <div class="wrap">
+    <h2 data-i18n="who_h2">Who this is for</h2>
+    <div class="who-grid">
+      <div class="who-card">
+        <div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M22 10 12 4 2 10l10 6 10-6Z"/></svg></div>
+        <h4 data-i18n="who1_t">Bachelor's & Master's applicants</h4>
+        <p data-i18n="who1_d">Preparing a first application to a Saudi government or university-funded program.</p>
+      </div>
+      <div class="who-card">
+        <div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <h4 data-i18n="who2_t">Previously rejected applicants</h4>
+        <p data-i18n="who2_d">Reapplying and wanting to understand exactly what went wrong the first time.</p>
+      </div>
+      <div class="who-card">
+        <div class="ic"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/></svg></div>
+        <h4 data-i18n="who3_t">Parents and mentors</h4>
+        <p data-i18n="who3_d">Helping a student navigate the process without prior scholarship experience themselves.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pdp-section">
+  <div class="wrap">
+    <h2 data-i18n="consult_h2">Consultation benefits included</h2>
+    <div class="consult-grid">
+      <div class="consult-card" style="background:linear-gradient(160deg,#22C55E,#16A34A)">
+        <div class="ic"><svg class="icon" viewBox="0 0 24 24" style="color:#fff"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h4 data-i18n="consult1_t">WhatsApp support</h4>
+        <p data-i18n="consult1_d">Send your questions any time — you'll get a direct, personal reply, not a canned response.</p>
+      </div>
+      <div class="consult-card" style="background:linear-gradient(160deg,#2563EB,#1D4ED8)">
+        <div class="ic"><svg class="icon" viewBox="0 0 24 24" style="color:#fff"><rect x="3" y="6" width="14" height="12" rx="2"/><path d="M17 10l4-2v8l-4-2"/></svg></div>
+        <h4 data-i18n="consult2_t">Google Meet session</h4>
+        <p data-i18n="consult2_d">Book a live call to walk through your specific documents and timeline together.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pdp-section">
+  <div class="wrap">
+    <h2 data-i18n="receive_h2">What you receive</h2>
+    <div class="receipt">
+      <div class="receipt-item"><div class="chk"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div><span data-i18n="r1">64-page PDF guide</span></div>
+      <div class="receipt-item"><div class="chk"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div><span data-i18n="r2">Editable CV template</span></div>
+      <div class="receipt-item"><div class="chk"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div><span data-i18n="r3">Motivation letter template</span></div>
+      <div class="receipt-item"><div class="chk"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div><span data-i18n="r4">Application checklist</span></div>
+      <div class="receipt-item"><div class="chk"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div><span data-i18n="r5">Interview question bank</span></div>
+      <div class="receipt-item"><div class="chk"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div><span data-i18n="r6">Full scholarship roadmap</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="pdp-section">
+  <div class="wrap">
+    <h2 data-i18n="faq_h2">Questions about this guide</h2>
+    <div class="faq" id="faqList"></div>
+  </div>
+</section>
+
+<section class="pdp-section">
+  <div class="wrap">
+    <h2 data-i18n="reviews_h2">Reviews</h2>
+    <div class="review-summary">
+      <div class="review-score">
+        <div class="n">4.9</div>
+        <div class="stars">★★★★★</div>
+        <div style="font-size:0.8rem;color:var(--ink-soft);margin-top:4px;"><span id="reviewCountLabel2">312</span> <span data-i18n="reviews_word">reviews</span></div>
+      </div>
+      <div class="review-bars">
+        <div class="review-bar-row"><span>5★</span><div class="track"><div class="fill" style="width:88%"></div></div><span>88%</span></div>
+        <div class="review-bar-row"><span>4★</span><div class="track"><div class="fill" style="width:9%"></div></div><span>9%</span></div>
+        <div class="review-bar-row"><span>3★</span><div class="track"><div class="fill" style="width:2%"></div></div><span>2%</span></div>
+        <div class="review-bar-row"><span>2★</span><div class="track"><div class="fill" style="width:1%"></div></div><span>1%</span></div>
+        <div class="review-bar-row"><span>1★</span><div class="track"><div class="fill" style="width:0%"></div></div><span>0%</span></div>
+      </div>
+    </div>
+
+    <div class="review-list" id="reviewList"></div>
+
+    <div class="review-form">
+      <h3 data-i18n="form_h3">Write a review</h3>
+      <p class="hint" data-i18n="form_hint">No account needed — just share your experience.</p>
+      <div class="form-row">
+        <div class="form-group"><label data-i18n="form_name">Name</label><input type="text" id="revName" data-i18n-ph="form_name_ph" placeholder="Your name"></div>
+        <div class="form-group"><label data-i18n="form_country">Country</label><input type="text" id="revCountry" data-i18n-ph="form_country_ph" placeholder="Your country"></div>
+      </div>
+      <div class="form-group" style="margin-bottom:14px;">
+        <label data-i18n="form_rating">Rating</label>
+        <div class="star-input" id="starInput">
+          <svg data-v="1" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg data-v="2" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg data-v="3" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg data-v="4" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          <svg data-v="5" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+        </div>
+      </div>
+      <div class="form-group"><label data-i18n="form_comment">Comment</label><textarea id="revComment" rows="4" data-i18n-ph="form_comment_ph" placeholder="Tell other students about your experience with this guide…"></textarea></div>
+      <div class="captcha-box" id="captchaBox">
+        <div class="chk"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <span data-i18n="form_captcha">I'm not a robot</span>
+      </div>
+      <button class="btn btn-primary btn-block" id="submitReview" data-i18n="form_submit">Submit Review</button>
+      <div class="form-success" id="formSuccess"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="form_success_msg">Thanks — your review has been posted.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="pdp-section">
+  <div class="wrap">
+    <h2 data-i18n="similar_h2">Similar products</h2>
+    <div class="similar-grid" id="similarGrid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span data-i18n="foot_line">Have a question about this guide? </span><a href="mourischolar-payment.html" data-i18n="foot_wa">Ask us on WhatsApp</a>
+  </div>
+</footer>
+
+<div class="sticky-buy">
+  <div><div class="p">$19</div></div>
+  <a href="mourischolar-payment.html" class="btn btn-primary" style="flex:1;" data-i18n="buy_whatsapp_short">Buy Now</a>
+</div>
+
+<script>
+/* ---------------- i18n ---------------- */
+const translations = {
+  en:{
+    nav_home:"Home", nav_products:"Products", nav_about:"About", nav_faq:"FAQ",
+    p_title:"Saudi Scholarship Master Guide", p_cat:"Saudi Scholarships", reviews_word:"reviews",
+    click_zoom:"Click to zoom",
+    feat1:"Instant PDF download", feat2:"Lifetime free updates", feat3:"WhatsApp support included", feat4:"Editable CV & letter templates",
+    buy_whatsapp:"Order via WhatsApp", buy_whatsapp_short:"Buy Now", buy_intl:"International Payment", buy_trust:"Secure manual payment · delivered by hand",
+    why_diff_h2:"Why this guide is different",
+    why_diff_p1:"Most scholarship advice online is generic — the same five tips repeated across a hundred blog posts. This guide is built from a single, real, fully funded application: the exact documents that were submitted, the exact timeline that was followed, and the exact answers that were given in interviews.",
+    why_diff_p2:"It is written for Saudi government-funded and university-funded programs specifically, so every recommendation accounts for how these committees actually evaluate candidates — not how a generic scholarship works.",
+    spec_pages:"Pages", spec_lang:"Language", spec_lang_v:"English, Arabic", spec_updated:"Last Updated", spec_updated_v:"August 2026", spec_author:"Author", spec_format:"Format", spec_format_v:"PDF + editable DOCX", spec_files:"Included Files",
+    learn_h2:"What you'll learn",
+    learn1:"How to check your eligibility before spending time on an application that won't qualify.",
+    learn2:"How to structure a motivation letter that actually gets read by a committee.",
+    learn3:"Which supporting documents matter most, and which are commonly over-prepared.",
+    learn4:"How to prepare for a scholarship interview using real questions from past panels.",
+    learn5:"The visa steps to start in parallel so you don't lose time after acceptance.",
+    learn6:"How to plan your first three months in Saudi Arabia as a new scholarship student.",
+    who_h2:"Who this is for",
+    who1_t:"Bachelor's & Master's applicants", who1_d:"Preparing a first application to a Saudi government or university-funded program.",
+    who2_t:"Previously rejected applicants", who2_d:"Reapplying and wanting to understand exactly what went wrong the first time.",
+    who3_t:"Parents and mentors", who3_d:"Helping a student navigate the process without prior scholarship experience themselves.",
+    consult_h2:"Consultation benefits included",
+    consult1_t:"WhatsApp support", consult1_d:"Send your questions any time — you'll get a direct, personal reply, not a canned response.",
+    consult2_t:"Google Meet session", consult2_d:"Book a live call to walk through your specific documents and timeline together.",
+    receive_h2:"What you receive",
+    r1:"64-page PDF guide", r2:"Editable CV template", r3:"Motivation letter template", r4:"Application checklist", r5:"Interview question bank", r6:"Full scholarship roadmap",
+    faq_h2:"Questions about this guide",
+    reviews_h2:"Reviews",
+    form_h3:"Write a review", form_hint:"No account needed — just share your experience.",
+    form_name:"Name", form_name_ph:"Your name", form_country:"Country", form_country_ph:"Your country",
+    form_rating:"Rating", form_comment:"Comment", form_comment_ph:"Tell other students about your experience with this guide…",
+    form_captcha:"I'm not a robot", form_submit:"Submit Review", form_success_msg:"Thanks — your review has been posted.",
+    form_error_rating:"Please choose a star rating.", form_error_captcha:"Please confirm you're not a robot.", form_error_fields:"Please fill in your name and comment.",
+    similar_h2:"Similar products",
+    foot_line:"Have a question about this guide? ", foot_wa:"Ask us on WhatsApp",
+    view_details:"View Details",
+    faqs:[
+      {q:"Is this guide specific to Saudi government scholarships?", a:"Yes — it focuses on Saudi government and university-funded programs, though the CV, letter, and interview sections apply broadly."},
+      {q:"Do I need any account to buy this?", a:"No. You choose the guide, contact us on WhatsApp or use an international payment method, and receive your files manually."},
+      {q:"What if the requirements change after I buy?", a:"You get free lifetime updates — if anything changes, you'll receive the revised PDF at no extra cost."},
+      {q:"Is the Google Meet session included in the price?", a:"Yes, one consultation session is included with this guide."}
+    ],
+    reviews:[
+      {name:"Fatima B.", loc:"Mauritania", rating:5, date:"2 weeks ago", init:"FB", grad:["#F97316","#FB923C"], text:"This is exactly what I needed. The templates alone saved me weeks of guessing, and the WhatsApp answers were always fast."},
+      {name:"Omar K.", loc:"Morocco", rating:5, date:"1 month ago", init:"OK", grad:["#2563EB","#3B82F6"], text:"Got accepted into a Master's program using the exact structure from this guide. Worth far more than the price."},
+      {name:"Aicha N.", loc:"Senegal", rating:4, date:"1 month ago", init:"AN", grad:["#D4AF37","#E9C766"], text:"Very detailed and practical. I would have liked a bit more on scholarship renewal, but overall excellent."}
+    ]
+  },
+  fr:{
+    nav_home:"Accueil", nav_products:"Produits", nav_about:"À propos", nav_faq:"FAQ",
+    p_title:"Guide complet des bourses saoudiennes", p_cat:"Bourses saoudiennes", reviews_word:"avis",
+    click_zoom:"Cliquez pour zoomer",
+    feat1:"Téléchargement PDF immédiat", feat2:"Mises à jour gratuites à vie", feat3:"Support WhatsApp inclus", feat4:"Modèles de CV et lettres modifiables",
+    buy_whatsapp:"Commander via WhatsApp", buy_whatsapp_short:"Acheter", buy_intl:"Paiement international", buy_trust:"Paiement manuel sécurisé · livraison en main propre",
+    why_diff_h2:"Pourquoi ce guide est différent",
+    why_diff_p1:"La plupart des conseils sur les bourses en ligne sont génériques — les mêmes cinq astuces répétées sur cent blogs. Ce guide est basé sur une seule candidature réelle et entièrement financée : les mêmes documents soumis, le même calendrier suivi, et les mêmes réponses données en entretien.",
+    why_diff_p2:"Il est écrit spécifiquement pour les programmes financés par le gouvernement saoudien et les universités, afin que chaque conseil corresponde à la façon dont ces comités évaluent réellement les candidats.",
+    spec_pages:"Pages", spec_lang:"Langue", spec_lang_v:"Anglais, Arabe", spec_updated:"Mis à jour le", spec_updated_v:"Août 2026", spec_author:"Auteur", spec_format:"Format", spec_format_v:"PDF + DOCX modifiable", spec_files:"Fichiers inclus",
+    learn_h2:"Ce que vous allez apprendre",
+    learn1:"Comment vérifier votre éligibilité avant de passer du temps sur une candidature qui ne sera pas retenue.",
+    learn2:"Comment structurer une lettre de motivation qui sera réellement lue par un comité.",
+    learn3:"Quels documents justificatifs comptent le plus, et lesquels sont souvent trop préparés.",
+    learn4:"Comment préparer un entretien de bourse avec de vraies questions posées par d'anciens jurys.",
+    learn5:"Les démarches de visa à démarrer en parallèle pour ne pas perdre de temps après l'acceptation.",
+    learn6:"Comment organiser vos trois premiers mois en Arabie saoudite en tant que nouvel étudiant boursier.",
+    who_h2:"À qui s'adresse ce guide",
+    who1_t:"Candidats Licence & Master", who1_d:"Préparant une première candidature à un programme financé par le gouvernement ou une université saoudienne.",
+    who2_t:"Candidats déjà refusés", who2_d:"Qui postulent à nouveau et veulent comprendre exactement ce qui a posé problème la première fois.",
+    who3_t:"Parents et mentors", who3_d:"Qui accompagnent un étudiant dans ce processus sans expérience préalable des bourses.",
+    consult_h2:"Avantages de consultation inclus",
+    consult1_t:"Support WhatsApp", consult1_d:"Envoyez vos questions à tout moment — vous recevrez une réponse directe et personnelle.",
+    consult2_t:"Session Google Meet", consult2_d:"Réservez un appel en direct pour passer en revue vos documents et votre calendrier ensemble.",
+    receive_h2:"Ce que vous recevez",
+    r1:"Guide PDF de 64 pages", r2:"Modèle de CV modifiable", r3:"Modèle de lettre de motivation", r4:"Check-list de candidature", r5:"Banque de questions d'entretien", r6:"Feuille de route complète",
+    faq_h2:"Questions sur ce guide",
+    reviews_h2:"Avis",
+    form_h3:"Laisser un avis", form_hint:"Aucun compte requis — partagez simplement votre expérience.",
+    form_name:"Nom", form_name_ph:"Votre nom", form_country:"Pays", form_country_ph:"Votre pays",
+    form_rating:"Note", form_comment:"Commentaire", form_comment_ph:"Parlez de votre expérience avec ce guide…",
+    form_captcha:"Je ne suis pas un robot", form_submit:"Envoyer l'avis", form_success_msg:"Merci — votre avis a été publié.",
+    form_error_rating:"Veuillez choisir une note.", form_error_captcha:"Veuillez confirmer que vous n'êtes pas un robot.", form_error_fields:"Veuillez renseigner votre nom et votre commentaire.",
+    similar_h2:"Produits similaires",
+    foot_line:"Une question sur ce guide ? ", foot_wa:"Contactez-nous sur WhatsApp",
+    view_details:"Voir les détails",
+    faqs:[
+      {q:"Ce guide concerne-t-il uniquement les bourses gouvernementales saoudiennes ?", a:"Oui — il se concentre sur les programmes financés par le gouvernement et les universités saoudiennes, bien que les sections CV, lettre et entretien s'appliquent largement."},
+      {q:"Ai-je besoin d'un compte pour l'acheter ?", a:"Non. Vous choisissez le guide, nous contactez sur WhatsApp ou utilisez un moyen de paiement international, et recevez vos fichiers manuellement."},
+      {q:"Que se passe-t-il si les exigences changent après mon achat ?", a:"Vous bénéficiez de mises à jour gratuites à vie — en cas de changement, vous recevrez le PDF révisé sans frais supplémentaires."},
+      {q:"La session Google Meet est-elle incluse dans le prix ?", a:"Oui, une session de consultation est incluse avec ce guide."}
+    ],
+    reviews:[
+      {name:"Fatima B.", loc:"Mauritanie", rating:5, date:"il y a 2 semaines", init:"FB", grad:["#F97316","#FB923C"], text:"Exactement ce dont j'avais besoin. Les modèles seuls m'ont fait gagner des semaines, et les réponses WhatsApp étaient toujours rapides."},
+      {name:"Omar K.", loc:"Maroc", rating:5, date:"il y a 1 mois", init:"OK", grad:["#2563EB","#3B82F6"], text:"J'ai été accepté en Master en suivant exactement la structure de ce guide. Cela vaut bien plus que son prix."},
+      {name:"Aicha N.", loc:"Sénégal", rating:4, date:"il y a 1 mois", init:"AN", grad:["#D4AF37","#E9C766"], text:"Très détaillé et pratique. J'aurais aimé un peu plus sur le renouvellement de bourse, mais globalement excellent."}
+    ]
+  },
+  ar:{
+    nav_home:"الرئيسية", nav_products:"المنتجات", nav_about:"من نحن", nav_faq:"الأسئلة الشائعة",
+    p_title:"الدليل الشامل للمنح السعودية", p_cat:"المنح السعودية", reviews_word:"تقييم",
+    click_zoom:"اضغط للتكبير",
+    feat1:"تحميل فوري لملف PDF", feat2:"تحديثات مجانية مدى الحياة", feat3:"دعم واتساب مشمول", feat4:"نماذج سيرة ذاتية وخطابات قابلة للتعديل",
+    buy_whatsapp:"اطلب عبر واتساب", buy_whatsapp_short:"اشترِ الآن", buy_intl:"الدفع الدولي", buy_trust:"دفع يدوي آمن · تسليم مباشر",
+    why_diff_h2:"لماذا هذا الدليل مختلف",
+    why_diff_p1:"معظم نصائح المنح على الإنترنت عامة — نفس النصائح الخمس تتكرر في مئات المدونات. هذا الدليل مبني على تجربة تقديم حقيقية وممولة بالكامل: نفس المستندات المقدَّمة، نفس الجدول الزمني المتبع، ونفس الإجابات التي قُدمت في المقابلات.",
+    why_diff_p2:"تمت كتابته خصيصًا للبرامج الممولة من الحكومة السعودية والجامعات، بحيث تعكس كل توصية الطريقة الحقيقية التي تُقيّم بها هذه اللجان المرشحين.",
+    spec_pages:"عدد الصفحات", spec_lang:"اللغة", spec_lang_v:"الإنجليزية، العربية", spec_updated:"آخر تحديث", spec_updated_v:"أغسطس 2026", spec_author:"المؤلفة", spec_format:"الصيغة", spec_format_v:"PDF + DOCX قابل للتعديل", spec_files:"الملفات المرفقة",
+    learn_h2:"ما ستتعلمه",
+    learn1:"كيفية التحقق من أهليتك قبل إضاعة الوقت في طلب لن يُقبل.",
+    learn2:"كيفية صياغة خطاب دافع يُقرأ فعليًا من قبل اللجنة.",
+    learn3:"أي المستندات الداعمة الأكثر أهمية، وأيها غالبًا ما يُبالَغ في تحضيره.",
+    learn4:"كيفية التحضير لمقابلة المنحة باستخدام أسئلة حقيقية من لجان سابقة.",
+    learn5:"خطوات التأشيرة التي يجب البدء بها بالتوازي حتى لا تضيع الوقت بعد القبول.",
+    learn6:"كيفية تخطيط أول ثلاثة أشهر لك في السعودية كطالب منحة جديد.",
+    who_h2:"لمن هذا الدليل",
+    who1_t:"المتقدمون للبكالوريوس والماجستير", who1_d:"يحضّرون لأول طلب لبرنامج ممول من الحكومة السعودية أو إحدى الجامعات.",
+    who2_t:"المتقدمون الذين رُفضوا سابقًا", who2_d:"يعيدون التقديم ويريدون فهم ما الذي لم ينجح في المرة الأولى بالتحديد.",
+    who3_t:"الأهل والموجهون", who3_d:"يساعدون طالبًا في هذه الرحلة دون خبرة سابقة بالمنح.",
+    consult_h2:"مزايا الاستشارة المشمولة",
+    consult1_t:"دعم عبر واتساب", consult1_d:"أرسل أسئلتك في أي وقت — ستحصل على رد مباشر وشخصي وليس ردًا جاهزًا.",
+    consult2_t:"جلسة غوغل ميت", consult2_d:"احجز مكالمة مباشرة لمراجعة مستنداتك وجدولك الزمني معًا.",
+    receive_h2:"ما ستحصل عليه",
+    r1:"دليل PDF من 64 صفحة", r2:"نموذج سيرة ذاتية قابل للتعديل", r3:"نموذج خطاب دافع", r4:"قائمة تحقق للتقديم", r5:"بنك أسئلة المقابلة", r6:"خارطة طريق كاملة للمنحة",
+    faq_h2:"أسئلة حول هذا الدليل",
+    reviews_h2:"التقييمات",
+    form_h3:"أضف تقييمك", form_hint:"لا حاجة لحساب — فقط شارك تجربتك.",
+    form_name:"الاسم", form_name_ph:"اسمك", form_country:"الدولة", form_country_ph:"دولتك",
+    form_rating:"التقييم", form_comment:"التعليق", form_comment_ph:"أخبر الطلاب الآخرين عن تجربتك مع هذا الدليل…",
+    form_captcha:"أنا لست روبوتًا", form_submit:"إرسال التقييم", form_success_msg:"شكرًا — تم نشر تقييمك.",
+    form_error_rating:"يرجى اختيار تقييم بالنجوم.", form_error_captcha:"يرجى تأكيد أنك لست روبوتًا.", form_error_fields:"يرجى إدخال اسمك وتعليقك.",
+    similar_h2:"منتجات مشابهة",
+    foot_line:"لديك سؤال حول هذا الدليل؟ ", foot_wa:"تواصل معنا عبر واتساب",
+    view_details:"عرض التفاصيل",
+    faqs:[
+      {q:"هل هذا الدليل خاص بالمنح الحكومية السعودية فقط؟", a:"نعم — يركز على البرامج الممولة من الحكومة السعودية والجامعات، رغم أن أقسام السيرة الذاتية والخطاب والمقابلة تنطبق بشكل واسع."},
+      {q:"هل أحتاج إلى حساب لشرائه؟", a:"لا. تختار الدليل، تتواصل معنا عبر واتساب أو تستخدم وسيلة دفع دولية، وتستلم ملفاتك يدويًا."},
+      {q:"ماذا لو تغيرت المتطلبات بعد الشراء؟", a:"تحصل على تحديثات مجانية مدى الحياة — إذا تغير أي شيء، ستستلم النسخة المحدثة دون أي تكلفة إضافية."},
+      {q:"هل جلسة غوغل ميت مشمولة في السعر؟", a:"نعم، جلسة استشارة واحدة مشمولة مع هذا الدليل."}
+    ],
+    reviews:[
+      {name:"فاطمة ب.", loc:"موريتانيا", rating:5, date:"قبل أسبوعين", init:"فب", grad:["#F97316","#FB923C"], text:"هذا بالضبط ما كنت أحتاجه. النماذج وحدها وفرت علي أسابيع من التخمين، وكانت إجابات واتساب سريعة دائمًا."},
+      {name:"عمر ك.", loc:"المغرب", rating:5, date:"قبل شهر", init:"عك", grad:["#2563EB","#3B82F6"], text:"تم قبولي في برنامج ماجستير باستخدام نفس هيكل هذا الدليل. يستحق أكثر بكثير من سعره."},
+      {name:"عائشة ن.", loc:"السنغال", rating:4, date:"قبل شهر", init:"عن", grad:["#D4AF37","#E9C766"], text:"مفصل وعملي جدًا. كنت أتمنى مزيدًا من التفاصيل حول تجديد المنحة، لكنه ممتاز بشكل عام."}
+    ]
+  }
+};
+let currentLang = 'en';
+let selectedStars = 0;
+
+const galleryData = [
+  {grad:["#F97316","#FB923C"], icon:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'},
+  {grad:["#111827","#374151"], icon:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>'},
+  {grad:["#2563EB","#3B82F6"], icon:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 21V9"/>'},
+  {grad:["#D4AF37","#E9C766"], icon:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>'},
+  {grad:["#22C55E","#4ADE80"], icon:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>'}
+];
+function renderGallery(){
+  const thumbs = document.getElementById('galleryThumbs');
+  thumbs.innerHTML = galleryData.map((g,i)=>`<div class="thumb ${i===0?'active':''}" data-i="${i}" style="background:linear-gradient(150deg, ${g.grad[0]}, ${g.grad[1]})"><svg class="icon" viewBox="0 0 24 24">${g.icon}</svg></div>`).join('');
+  thumbs.querySelectorAll('.thumb').forEach(t=>{
+    t.addEventListener('click', ()=>{
+      thumbs.querySelectorAll('.thumb').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      setMainImage(parseInt(t.dataset.i));
+    });
+  });
+  setMainImage(0);
+}
+function setMainImage(i){
+  const g = galleryData[i];
+  const main = document.getElementById('galleryMain');
+  main.style.background = `linear-gradient(150deg, ${g.grad[0]}, ${g.grad[1]})`;
+  main.querySelector('svg').outerHTML = `<svg class="icon" viewBox="0 0 24 24" style="width:70px;height:70px;color:rgba(255,255,255,0.85)">${g.icon}</svg>`;
+  main.dataset.i = i;
+}
+document.getElementById('galleryMain').addEventListener('click', ()=>{
+  const i = parseInt(document.getElementById('galleryMain').dataset.i || 0);
+  const g = galleryData[i];
+  const inner = document.getElementById('lightboxInner');
+  inner.style.background = `linear-gradient(150deg, ${g.grad[0]}, ${g.grad[1]})`;
+  inner.innerHTML = `<svg class="icon" viewBox="0 0 24 24" style="width:110px;height:110px;color:rgba(255,255,255,0.85)">${g.icon}</svg>`;
+  document.getElementById('lightbox').classList.add('open');
+});
+document.getElementById('lightboxClose').addEventListener('click', e=>{ e.stopPropagation(); document.getElementById('lightbox').classList.remove('open'); });
+document.getElementById('lightbox').addEventListener('click', ()=> document.getElementById('lightbox').classList.remove('open'));
+
+function starIconSvg(){ return '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>'; }
+
+function renderFaq(){
+  const dict = translations[currentLang];
+  const list = document.getElementById('faqList');
+  list.innerHTML = '';
+  dict.faqs.forEach((item,i)=>{
+    const div = document.createElement('div');
+    div.className = 'faq-item' + (i===0?' open':'');
+    div.innerHTML = `<button class="faq-q"><span>${item.q}</span><svg class="icon" viewBox="0 0 24 24" style="width:17px;height:17px"><path d="M6 9l6 6 6-6"/></svg></button><div class="faq-a"><p>${item.a}</p></div>`;
+    div.querySelector('.faq-q').addEventListener('click', ()=>{
+      const open = div.classList.contains('open');
+      list.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'));
+      if(!open) div.classList.add('open');
+    });
+    list.appendChild(div);
+  });
+}
+
+let extraReviews = [];
+function renderReviews(){
+  const dict = translations[currentLang];
+  const list = document.getElementById('reviewList');
+  const all = [...extraReviews, ...dict.reviews];
+  document.getElementById('reviewCountLabel').textContent = 312 + extraReviews.length;
+  document.getElementById('reviewCountLabel2').textContent = 312 + extraReviews.length;
+  list.innerHTML = all.map(r=>{
+    const stars = Array.from({length:5}).map((_,i)=>`<span style="opacity:${i<r.rating?1:0.25}">${starIconSvg()}</span>`).join('');
+    return `<div class="review-card">
+      <div class="review-top">
+        <div class="review-person">
+          <div class="review-avatar" style="background:linear-gradient(135deg, ${r.grad[0]}, ${r.grad[1]})">${r.init}</div>
+          <div><div class="review-name">${r.name}</div><div class="review-loc">${r.loc}</div></div>
+        </div>
+        <div style="text-align:end"><div class="stars">${stars}</div><div class="review-date">${r.date}</div></div>
+      </div>
+      <div class="review-text">${r.text}</div>
+    </div>`;
+  }).join('');
+}
+
+/* review form interactivity */
+document.getElementById('starInput').addEventListener('click', e=>{
+  const svg = e.target.closest('svg');
+  if(!svg) return;
+  selectedStars = parseInt(svg.dataset.v);
+  document.querySelectorAll('#starInput svg').forEach(s=>{
+    s.classList.toggle('on', parseInt(s.dataset.v) <= selectedStars);
+  });
+});
+document.getElementById('captchaBox').addEventListener('click', function(){ this.classList.toggle('checked'); });
+document.getElementById('submitReview').addEventListener('click', ()=>{
+  const dict = translations[currentLang];
+  const name = document.getElementById('revName').value.trim();
+  const country = document.getElementById('revCountry').value.trim();
+  const comment = document.getElementById('revComment').value.trim();
+  const captchaChecked = document.getElementById('captchaBox').classList.contains('checked');
+  const successEl = document.getElementById('formSuccess');
+  successEl.classList.remove('show');
+  if(!name || !comment){ alert(dict.form_error_fields); return; }
+  if(selectedStars === 0){ alert(dict.form_error_rating); return; }
+  if(!captchaChecked){ alert(dict.form_error_captcha); return; }
+  const grads = [["#F97316","#FB923C"],["#2563EB","#3B82F6"],["#D4AF37","#E9C766"],["#22C55E","#4ADE80"],["#111827","#374151"]];
+  extraReviews.unshift({
+    name, loc: country || '—', rating: selectedStars, date: dict.reviews_word === 'reviews' ? 'Just now' : (currentLang==='fr' ? "à l'instant" : "الآن"),
+    init: name.slice(0,2).toUpperCase(), grad: grads[Math.floor(Math.random()*grads.length)], text: comment
+  });
+  renderReviews();
+  successEl.classList.add('show');
+  document.getElementById('revName').value=''; document.getElementById('revCountry').value=''; document.getElementById('revComment').value='';
+  document.getElementById('captchaBox').classList.remove('checked');
+  selectedStars = 0;
+  document.querySelectorAll('#starInput svg').forEach(s=>s.classList.remove('on'));
+});
+
+/* similar products */
+const similarData = [
+  {catKey:"phd", price:24, rating:5, grad:["#2563EB","#3B82F6"],
+    title:{en:"PhD Application Kit", fr:"Kit de candidature au doctorat", ar:"حزمة التقديم للدكتوراه"}},
+  {catKey:"visa", price:9, rating:5, grad:["#22C55E","#4ADE80"],
+    title:{en:"Visa Preparation Checklist", fr:"Check-list de préparation du visa", ar:"قائمة تحقق لتحضير التأشيرة"}},
+  {catKey:"interview", price:12, rating:4, grad:["#D4AF37","#E9C766"],
+    title:{en:"Interview Preparation Guide", fr:"Guide de préparation aux entretiens", ar:"دليل تحضير المقابلة"}}
+];
+const catLabels = {
+  en:{phd:"PhD", visa:"Visa", interview:"Interviews"},
+  fr:{phd:"Doctorat", visa:"Visa", interview:"Entretiens"},
+  ar:{phd:"الدكتوراه", visa:"التأشيرة", interview:"المقابلات"}
+};
+function renderSimilar(){
+  const dict = translations[currentLang];
+  const grid = document.getElementById('similarGrid');
+  grid.innerHTML = similarData.map(p=>{
+    const stars = Array.from({length:5}).map((_,i)=>`<span style="opacity:${i<p.rating?1:0.25}">${starIconSvg()}</span>`).join('');
+    return `<div class="product-card">
+      <div class="product-cover" style="background:linear-gradient(150deg, ${p.grad[0]}, ${p.grad[1]})">
+        <span class="cat">${catLabels[currentLang][p.catKey]}</span>
+        <svg class="icon" viewBox="0 0 24 24" style="width:32px;height:32px;color:rgba(255,255,255,0.85)"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      </div>
+      <div class="product-body">
+        <div class="product-title">${p.title[currentLang]}</div>
+        <div class="stars" style="margin-bottom:12px;">${stars}</div>
+        <div class="product-foot"><span class="price">$${p.price}</span><a href="mourischolar-product-details.html" class="btn btn-outline" style="padding:8px 14px;font-size:0.8rem;">${dict.view_details}</a></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function applyLang(lang){
+  currentLang = lang;
+  const dict = translations[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ if(dict[el.getAttribute('data-i18n')] !== undefined) el.textContent = dict[el.getAttribute('data-i18n')]; });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ el.placeholder = dict[el.getAttribute('data-i18n-ph')]; });
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.body.classList.toggle('lang-ar', lang === 'ar');
+  document.querySelectorAll('#langSwitch button').forEach(b=> b.classList.toggle('active', b.dataset.lang === lang));
+  renderFaq();
+  renderReviews();
+  renderSimilar();
+}
+document.getElementById('langSwitch').addEventListener('click', e=>{
+  const btn = e.target.closest('button');
+  if(btn) applyLang(btn.dataset.lang);
+});
+
+renderGallery();
+applyLang('en');
+</script>
+</body>
+</html>

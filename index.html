@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MouriScholar — Your Gateway to Scholarships and Studying Abroad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Cairo:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#111827;
+    --ink-soft:#4B5563;
+    --cream:#FDFBF6;
+    --surface:#F9FAFB;
+    --border:#E5E7EB;
+    --orange:#F97316;
+    --amber:#FB923C;
+    --gold:#D4AF37;
+    --blue:#2563EB;
+    --success:#22C55E;
+    --white:#FFFFFF;
+    --font-head:'Manrope', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --radius:20px;
+    --radius-sm:12px;
+    --container:1160px;
+  }
+  body.lang-ar{ --font-head:'Cairo', sans-serif; --font-body:'Cairo', sans-serif; }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:var(--font-body);
+    color:var(--ink);
+    background:var(--cream);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  button{font-family:inherit; cursor:pointer;}
+  h1,h2,h3,h4{font-family:var(--font-head); margin:0; letter-spacing:-0.02em; line-height:1.1;}
+  p{margin:0;}
+  .wrap{max-width:var(--container); margin:0 auto; padding:0 28px;}
+  .icon{width:22px; height:22px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0;}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky; top:0; z-index:100;
+    background:rgba(253,251,246,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid transparent;
+    transition:border-color .25s ease, box-shadow .25s ease;
+  }
+  header.scrolled{ border-color:var(--border); box-shadow:0 1px 0 rgba(17,24,39,0.02); }
+  nav.wrap{ display:flex; align-items:center; justify-content:space-between; height:78px; }
+  .brand{ display:flex; align-items:center; gap:10px; font-family:var(--font-head); font-weight:800; font-size:1.28rem; }
+  .brand-mark{ width:34px; height:34px; border-radius:9px; background:linear-gradient(140deg,var(--orange),var(--amber)); display:flex; align-items:center; justify-content:center; color:#fff; }
+  .brand-mark svg{width:19px;height:19px;}
+  .nav-links{ display:flex; align-items:center; gap:34px; font-size:0.95rem; font-weight:600; color:var(--ink-soft); }
+  .nav-links a{ transition:color .15s ease; }
+  .nav-links a:hover{ color:var(--ink); }
+  .nav-right{ display:flex; align-items:center; gap:16px; }
+  .lang-switch{ display:flex; background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:3px; gap:2px; }
+  .lang-switch button{ border:none; background:transparent; padding:6px 12px; border-radius:999px; font-size:0.8rem; font-weight:700; color:var(--ink-soft); }
+  .lang-switch button.active{ background:var(--ink); color:#fff; }
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 22px; border-radius:11px; font-weight:700; font-size:0.93rem; border:1.5px solid transparent; white-space:nowrap; transition:transform .15s ease, box-shadow .15s ease, background .15s ease; }
+  .btn:active{ transform:scale(0.97); }
+  .btn-primary{ background:var(--orange); color:#fff; box-shadow:0 8px 20px -8px rgba(249,115,22,0.6); }
+  .btn-primary:hover{ background:#EA6A0E; box-shadow:0 10px 24px -8px rgba(249,115,22,0.75); }
+  .btn-outline{ background:transparent; border-color:var(--ink); color:var(--ink); }
+  .btn-outline:hover{ background:var(--ink); color:#fff; }
+  .btn-dark{ background:var(--ink); color:#fff; }
+  .btn-dark:hover{ background:#0a0f1a; }
+  .menu-toggle{ display:none; background:none; border:none; color:var(--ink); }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding:76px 0 60px; position:relative; }
+  .hero-grid{ display:grid; grid-template-columns:1.05fr 0.95fr; gap:64px; align-items:center; }
+  .eyebrow-free{}
+  .hero h1{ font-size:3.35rem; font-weight:800; margin-bottom:22px; }
+  .hero p.lead{ font-size:1.14rem; color:var(--ink-soft); line-height:1.65; max-width:480px; margin-bottom:34px; }
+  .hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:38px;}
+  .hero-trustline{ display:flex; align-items:center; gap:12px; color:var(--ink-soft); font-size:0.88rem; font-weight:500; }
+  .avatar-stack{ display:flex; }
+  .avatar-stack span{ width:30px; height:30px; border-radius:50%; border:2.5px solid var(--cream); margin-inline-start:-9px; }
+  .avatar-stack span:first-child{ margin-inline-start:0; }
+
+  /* boarding pass visual */
+  .pass-wrap{ position:relative; }
+  .pass{
+    background:var(--ink); color:#fff; border-radius:22px; overflow:hidden;
+    box-shadow:0 30px 60px -20px rgba(17,24,39,0.45);
+    display:grid; grid-template-columns:1fr 108px; position:relative;
+    transform:rotate(1.2deg);
+  }
+  .pass-main{ padding:30px 28px; position:relative; }
+  .pass-top{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:26px; }
+  .pass-brand{ font-family:var(--font-head); font-weight:800; font-size:0.95rem; display:flex; align-items:center; gap:8px; color:var(--amber); }
+  .pass-status{ font-size:0.68rem; font-weight:800; letter-spacing:0.08em; background:rgba(34,197,94,0.16); color:#4ADE80; padding:5px 11px; border-radius:999px; }
+  .pass-route{ display:flex; align-items:center; gap:16px; margin-bottom:24px; }
+  .pass-city{ }
+  .pass-city .code{ font-family:var(--font-head); font-size:1.9rem; font-weight:800; }
+  .pass-city .name{ font-size:0.72rem; color:#9CA3AF; margin-top:2px; }
+  .pass-plane{ flex:1; display:flex; align-items:center; justify-content:center; color:var(--amber); position:relative; }
+  .pass-plane::before{ content:''; position:absolute; left:0; right:0; top:50%; height:1px; background:repeating-linear-gradient(90deg, rgba(255,255,255,0.35) 0 6px, transparent 6px 12px); }
+  .pass-plane svg{ background:var(--ink); position:relative; z-index:1; width:22px; height:22px; }
+  .pass-meta{ display:flex; gap:26px; }
+  .pass-meta div .k{ font-size:0.64rem; color:#9CA3AF; letter-spacing:0.06em; margin-bottom:4px; }
+  .pass-meta div .v{ font-size:0.86rem; font-weight:700; }
+  .pass-stub{ background:#1A2233; padding:24px 14px; display:flex; flex-direction:column; align-items:center; justify-content:space-between; position:relative; }
+  .pass-stub .qr{ width:56px; height:56px; border-radius:8px; background:
+      linear-gradient(90deg, #fff 2px, transparent 2px) 0 0/8px 8px,
+      linear-gradient(#fff 2px, transparent 2px) 0 0/8px 8px, #1A2233;
+      opacity:0.85; }
+  .pass-stub .vert{ writing-mode:vertical-rl; font-size:0.65rem; letter-spacing:0.08em; color:#9CA3AF; font-weight:700; }
+  .perf{ position:absolute; top:0; bottom:0; width:1px; background:none; }
+  .pass::after{ content:''; position:absolute; right:108px; top:0; bottom:0; width:0; border-inline-start:2px dashed rgba(255,255,255,0.22); }
+  .notch{ position:absolute; width:20px; height:20px; border-radius:50%; background:var(--cream); right:98px; }
+  .notch.top{ top:-10px; } .notch.bottom{ bottom:-10px; }
+  .pass-floater{
+    position:absolute; background:#fff; border-radius:14px; padding:12px 16px; box-shadow:0 16px 30px -12px rgba(17,24,39,0.25);
+    display:flex; align-items:center; gap:10px; font-size:0.82rem; font-weight:700;
+  }
+  .pass-floater.f1{ top:-24px; inset-inline-start:-18px; transform:rotate(-4deg); }
+  .pass-floater.f2{ bottom:-22px; inset-inline-end:-14px; transform:rotate(3deg); }
+  .pass-floater .dot{ width:9px; height:9px; border-radius:50%; background:var(--success); }
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section{ padding:88px 0; }
+  .section.alt{ background:var(--surface); }
+  .sec-head{ max-width:600px; margin-bottom:52px; }
+  .sec-head h2{ font-size:2.3rem; font-weight:800; margin-bottom:14px; }
+  .sec-head p{ color:var(--ink-soft); font-size:1.04rem; line-height:1.6; }
+  .sec-head.center{ margin-left:auto; margin-right:auto; text-align:center; }
+
+  /* ---------- TICKET STATS STRIP ---------- */
+  .ticket{
+    background:var(--ink); border-radius:22px; display:grid; grid-template-columns:repeat(6,1fr);
+    position:relative; box-shadow:0 24px 50px -24px rgba(17,24,39,0.5);
+  }
+  .ticket-item{ padding:30px 18px; text-align:center; position:relative; color:#fff; }
+  .ticket-item:not(:first-child){ border-inline-start:2px dashed rgba(255,255,255,0.18); }
+  .ticket-item:not(:first-child)::before, .ticket-item:not(:first-child)::after{
+    content:''; position:absolute; inset-inline-start:-11px; width:22px; height:22px; border-radius:50%; background:var(--cream);
+  }
+  .section.alt .ticket-item:not(:first-child)::before, .section.alt .ticket-item:not(:first-child)::after{ background:var(--surface); }
+  .ticket-item:not(:first-child)::before{ top:-11px; }
+  .ticket-item:not(:first-child)::after{ bottom:-11px; }
+  .ticket-item .num{ font-family:var(--font-head); font-size:2.1rem; font-weight:800; color:var(--amber); margin-bottom:6px; }
+  .ticket-item .lbl{ font-size:0.8rem; color:#D1D5DB; font-weight:500; }
+
+  /* ---------- BENTO WHY CHOOSE ---------- */
+  .bento{ display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:170px; gap:18px; }
+  .bento-card{ background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:26px; display:flex; flex-direction:column; justify-content:flex-end; gap:8px; transition:box-shadow .2s ease, transform .2s ease; }
+  .bento-card:hover{ box-shadow:0 16px 32px -18px rgba(17,24,39,0.18); transform:translateY(-2px); }
+  .bento-card.large{ grid-column:span 2; grid-row:span 2; background:linear-gradient(160deg,#111827,#1f2937); color:#fff; border:none; justify-content:space-between; }
+  .bento-card.large .top-row{ display:flex; justify-content:space-between; align-items:flex-start; }
+  .bento-card.large .badge{ background:rgba(251,146,60,0.18); color:var(--amber); font-size:0.72rem; font-weight:700; padding:6px 12px; border-radius:999px; }
+  .bento-card .ic{ width:40px; height:40px; border-radius:11px; background:var(--surface); display:flex; align-items:center; justify-content:center; color:var(--orange); margin-bottom:4px; }
+  .bento-card.large .ic{ background:rgba(255,255,255,0.08); color:var(--amber); }
+  .bento-card h4{ font-size:1.02rem; font-weight:700; }
+  .bento-card.large h4{ font-size:1.4rem; }
+  .bento-card p{ font-size:0.87rem; color:var(--ink-soft); line-height:1.5; }
+  .bento-card.large p{ color:#D1D5DB; }
+
+  /* ---------- PRODUCTS ---------- */
+  .sec-head-row{ display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:44px; }
+  .sec-head-row .sec-head{ margin-bottom:0; }
+  .products{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .product-card{ background:#fff; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; transition:box-shadow .2s ease, transform .2s ease; }
+  .product-card:hover{ box-shadow:0 18px 36px -20px rgba(17,24,39,0.2); transform:translateY(-3px); }
+  .product-cover{ height:150px; position:relative; display:flex; align-items:center; justify-content:center; color:#fff; }
+  .product-cover .cat{ position:absolute; top:12px; inset-inline-start:12px; background:rgba(255,255,255,0.22); backdrop-filter:blur(6px); font-size:0.68rem; font-weight:700; padding:5px 10px; border-radius:999px; }
+  .product-body{ padding:20px; }
+  .product-title{ font-family:var(--font-head); font-weight:700; font-size:1.02rem; margin-bottom:6px; }
+  .product-desc{ font-size:0.85rem; color:var(--ink-soft); line-height:1.5; margin-bottom:14px; }
+  .product-meta{ display:flex; align-items:center; gap:10px; font-size:0.8rem; color:var(--ink-soft); margin-bottom:16px; }
+  .stars{ display:flex; align-items:center; gap:3px; color:var(--gold); }
+  .stars svg{ width:14px; height:14px; }
+  .product-foot{ display:flex; align-items:center; justify-content:space-between; }
+  .price{ font-family:var(--font-head); font-weight:800; font-size:1.12rem; }
+  .product-foot .btn{ padding:9px 16px; font-size:0.83rem; }
+
+  /* ---------- TESTIMONIALS ---------- */
+  .testi-wrap{ position:relative; max-width:760px; margin:0 auto; }
+  .testi-card{ background:#fff; border:1px solid var(--border); border-radius:24px; padding:48px; text-align:center; }
+  .testi-card .q-icon{ color:var(--orange); margin:0 auto 18px; width:34px; height:34px; }
+  .testi-quote{ font-family:var(--font-head); font-size:1.25rem; font-weight:600; line-height:1.55; margin-bottom:26px; }
+  .testi-person{ display:flex; align-items:center; justify-content:center; gap:12px; }
+  .testi-avatar{ width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-family:var(--font-head); }
+  .testi-name{ font-weight:700; font-size:0.92rem; }
+  .testi-loc{ font-size:0.8rem; color:var(--ink-soft); }
+  .testi-nav{ display:flex; justify-content:center; align-items:center; gap:20px; margin-top:28px; }
+  .testi-nav button{ background:#fff; border:1px solid var(--border); width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--ink); }
+  .testi-nav button:hover{ background:var(--ink); color:#fff; }
+  .testi-dots{ display:flex; gap:7px; }
+  .testi-dots span{ width:7px; height:7px; border-radius:50%; background:var(--border); transition:background .2s, width .2s; }
+  .testi-dots span.active{ background:var(--orange); width:20px; border-radius:4px; }
+
+  /* ---------- FOUNDER TIMELINE ---------- */
+  .founder-grid{ display:grid; grid-template-columns:0.85fr 1.15fr; gap:70px; align-items:start; }
+  .founder-portrait{ position:sticky; top:110px; }
+  .portrait-card{ background:linear-gradient(160deg,#111827,#1f2937); border-radius:24px; padding:34px; color:#fff; }
+  .portrait-photo{ width:100%; aspect-ratio:1/1; border-radius:16px; background:linear-gradient(135deg,var(--orange),var(--gold)); display:flex; align-items:center; justify-content:center; margin-bottom:20px; }
+  .portrait-photo svg{ width:64px; height:64px; color:rgba(255,255,255,0.9); }
+  .portrait-card h4{ font-size:1.15rem; margin-bottom:4px; }
+  .portrait-card .role{ color:var(--amber); font-size:0.85rem; font-weight:600; margin-bottom:16px; }
+  .portrait-card .quote{ font-size:0.9rem; color:#D1D5DB; line-height:1.6; border-inline-start:2px solid var(--orange); padding-inline-start:14px; }
+  .timeline{ position:relative; padding-inline-start:34px; }
+  .timeline::before{ content:''; position:absolute; inset-inline-start:6px; top:6px; bottom:6px; width:2px; background:var(--border); }
+  .t-item{ position:relative; padding-bottom:38px; }
+  .t-item:last-child{ padding-bottom:0; }
+  .t-item::before{ content:''; position:absolute; inset-inline-start:-34px; top:2px; width:14px; height:14px; border-radius:50%; background:#fff; border:3px solid var(--orange); }
+  .t-year{ font-family:var(--font-head); font-weight:800; color:var(--orange); font-size:0.85rem; margin-bottom:6px; }
+  .t-item h4{ font-size:1.08rem; margin-bottom:6px; }
+  .t-item p{ color:var(--ink-soft); font-size:0.93rem; line-height:1.6; max-width:520px; }
+
+  /* ---------- GALLERY (document motif) ---------- */
+  .gallery{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+  .doc-tile{ border-radius:16px; padding:22px; height:190px; display:flex; flex-direction:column; justify-content:space-between; position:relative; overflow:hidden; color:#fff; }
+  .doc-tile .stamp{ position:absolute; top:16px; inset-inline-end:16px; border:2px solid rgba(255,255,255,0.5); color:rgba(255,255,255,0.85); font-size:0.6rem; font-weight:800; letter-spacing:0.05em; padding:4px 8px; border-radius:6px; transform:rotate(8deg); }
+  .doc-tile .lines{ display:flex; flex-direction:column; gap:6px; }
+  .doc-tile .lines span{ height:5px; border-radius:3px; background:rgba(255,255,255,0.3); }
+  .doc-tile .lines span:nth-child(1){ width:70%; }
+  .doc-tile .lines span:nth-child(2){ width:45%; }
+  .doc-tile .cap{ font-weight:700; font-size:0.92rem; }
+  .doc-tile.tall{ grid-row:span 2; height:398px; }
+
+  /* ---------- CHECKLIST ---------- */
+  .receipt{ background:#fff; border:1px solid var(--border); border-radius:24px; max-width:640px; margin:0 auto; padding:44px 48px; box-shadow:0 30px 60px -30px rgba(17,24,39,0.15); }
+  .receipt-head{ text-align:center; padding-bottom:22px; border-bottom:2px dashed var(--border); margin-bottom:22px; }
+  .receipt-head h4{ font-size:1.05rem; font-weight:700; }
+  .receipt-head p{ color:var(--ink-soft); font-size:0.85rem; margin-top:4px; }
+  .receipt-item{ display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px dashed var(--border); }
+  .receipt-item:last-child{ border-bottom:none; }
+  .receipt-item .chk{ width:22px; height:22px; border-radius:50%; background:rgba(34,197,94,0.12); color:var(--success); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .receipt-item .chk svg{ width:13px; height:13px; }
+  .receipt-item span{ font-size:0.94rem; font-weight:500; }
+
+  /* ---------- FAQ ---------- */
+  .faq{ max-width:720px; margin:0 auto; }
+  .faq-item{ border-bottom:1px solid var(--border); }
+  .faq-q{ width:100%; background:none; border:none; padding:22px 4px; display:flex; align-items:center; justify-content:space-between; text-align:start; font-family:var(--font-head); font-weight:700; font-size:1.02rem; color:var(--ink); }
+  .faq-q svg{ transition:transform .2s ease; flex-shrink:0; color:var(--orange); }
+  .faq-item.open .faq-q svg{ transform:rotate(180deg); }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .25s ease; }
+  .faq-item.open .faq-a{ max-height:200px; }
+  .faq-a p{ padding:0 4px 22px; color:var(--ink-soft); font-size:0.94rem; line-height:1.65; max-width:640px; }
+
+  /* ---------- FINAL CTA ---------- */
+  .final-cta{ background:var(--ink); border-radius:32px; padding:70px 60px; text-align:center; position:relative; overflow:hidden; }
+  .final-cta::before{ content:''; position:absolute; width:520px; height:520px; background:radial-gradient(circle, rgba(249,115,22,0.35), transparent 65%); top:-260px; inset-inline-end:-160px; }
+  .final-cta::after{ content:''; position:absolute; width:420px; height:420px; background:radial-gradient(circle, rgba(212,175,55,0.22), transparent 65%); bottom:-220px; inset-inline-start:-140px; }
+  .final-cta h2{ color:#fff; font-size:2.4rem; margin-bottom:14px; position:relative; }
+  .final-cta p{ color:#D1D5DB; margin-bottom:32px; position:relative; font-size:1.05rem; }
+  .final-cta .btn{ position:relative; }
+
+  /* ---------- FOOTER ---------- */
+  footer{ padding:70px 0 30px; }
+  .foot-top{ display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:40px; padding-bottom:44px; border-bottom:1px solid var(--border); }
+  .foot-brand p{ color:var(--ink-soft); font-size:0.9rem; line-height:1.6; margin-top:14px; max-width:280px; }
+  .foot-col h5{ font-family:var(--font-head); font-size:0.86rem; font-weight:700; margin-bottom:16px; }
+  .foot-col ul{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:11px; }
+  .foot-col a{ color:var(--ink-soft); font-size:0.9rem; }
+  .foot-col a:hover{ color:var(--orange); }
+  .foot-social{ display:flex; gap:10px; margin-top:16px; }
+  .foot-social a{ width:36px; height:36px; border-radius:50%; background:var(--surface); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; }
+  .foot-bottom{ display:flex; justify-content:space-between; align-items:center; padding-top:26px; color:var(--ink-soft); font-size:0.82rem; }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 980px){
+    .nav-links{ display:none; }
+    .menu-toggle{ display:flex; }
+    .hero-grid{ grid-template-columns:1fr; gap:70px; }
+    .hero h1{ font-size:2.5rem; }
+    .pass{ transform:none; max-width:420px; margin:0 auto; }
+    .ticket{ grid-template-columns:repeat(3,1fr); }
+    .ticket-item:nth-child(3n+1){ border-inline-start:none; }
+    .ticket-item:nth-child(3n+1)::before, .ticket-item:nth-child(3n+1)::after{ display:none; }
+    .bento{ grid-template-columns:repeat(2,1fr); }
+    .bento-card.large{ grid-column:span 2; grid-row:span 1; }
+    .products{ grid-template-columns:repeat(2,1fr); }
+    .founder-grid{ grid-template-columns:1fr; }
+    .founder-portrait{ position:static; max-width:340px; }
+    .gallery{ grid-template-columns:repeat(2,1fr); }
+    .doc-tile.tall{ grid-row:span 1; height:190px; }
+    .foot-top{ grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width: 620px){
+    .wrap{ padding:0 20px; }
+    .hero{ padding:44px 0 40px; }
+    .hero h1{ font-size:2rem; }
+    .ticket{ grid-template-columns:repeat(2,1fr); }
+    .ticket-item:nth-child(2n+1){ border-inline-start:none; }
+    .ticket-item:nth-child(2n+1)::before, .ticket-item:nth-child(2n+1)::after{ display:none; }
+    .products{ grid-template-columns:1fr; }
+    .gallery{ grid-template-columns:1fr 1fr; }
+    .section{ padding:56px 0; }
+    .sec-head h2{ font-size:1.7rem; }
+    .testi-card{ padding:30px 22px; }
+    .final-cta{ padding:48px 26px; }
+    .final-cta h2{ font-size:1.7rem; }
+    .foot-top{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <nav class="wrap">
+    <a href="#" class="brand">
+      <span class="brand-mark"><svg class="icon" viewBox="0 0 24 24"><path d="M22 10 12 4 2 10l10 6 10-6Z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></span>
+      MouriScholar
+    </a>
+    <div class="nav-links">
+      <a href="#" data-i18n="nav_home">Home</a>
+      <a href="#products" data-i18n="nav_products">Products</a>
+      <a href="#founder" data-i18n="nav_about">About</a>
+      <a href="#faq" data-i18n="nav_faq">FAQ</a>
+    </div>
+    <div class="nav-right">
+      <div class="lang-switch" id="langSwitch">
+        <button data-lang="en" class="active">EN</button>
+        <button data-lang="fr">FR</button>
+        <button data-lang="ar">AR</button>
+      </div>
+      <a href="#products" class="btn btn-primary" data-i18n="nav_cta">Browse Products</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1 data-i18n="hero_h1">Unlock Fully Funded Scholarships Around the World.</h1>
+      <p class="lead" data-i18n="hero_sub">Practical guides, real templates and direct support — written by someone who went through the process and got in.</p>
+      <div class="hero-ctas">
+        <a href="#products" class="btn btn-primary" data-i18n="hero_cta1">Browse Products</a>
+        <a href="#founder" class="btn btn-outline" data-i18n="hero_cta2">Start Your Journey</a>
+      </div>
+      <div class="hero-trustline">
+        <div class="avatar-stack">
+          <span style="background:linear-gradient(135deg,#F97316,#FB923C)"></span>
+          <span style="background:linear-gradient(135deg,#2563EB,#60A5FA)"></span>
+          <span style="background:linear-gradient(135deg,#D4AF37,#F5D876)"></span>
+          <span style="background:linear-gradient(135deg,#111827,#374151)"></span>
+        </div>
+        <span data-i18n="hero_trust">Joined by 2,400+ students across 35 countries</span>
+      </div>
+    </div>
+    <div class="pass-wrap">
+      <div class="pass-floater f1"><span class="dot"></span> <span data-i18n="pass_float1">Application accepted</span></div>
+      <div class="pass">
+        <div class="pass-main">
+          <div class="pass-top">
+            <div class="pass-brand">
+              <svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M22 10 12 4 2 10l10 6 10-6Z"/></svg>
+              MOURISCHOLAR
+            </div>
+            <div class="pass-status" data-i18n="pass_status">ACCEPTED</div>
+          </div>
+          <div class="pass-route">
+            <div class="pass-city">
+              <div class="code">HOME</div>
+              <div class="name" data-i18n="pass_from">Your country</div>
+            </div>
+            <div class="pass-plane">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5a1.5 1.5 0 0 0-2.1-2.1L14 8.8 5.8 7l-1 1 6.8 3.9-2 2-3.2-.3-.8.9 2.8 1.9 1.9 2.8.9-.8-.3-3.2 2-2 3.9 6.8Z"/></svg>
+            </div>
+            <div class="pass-city" style="text-align:end">
+              <div class="code">STDY</div>
+              <div class="name" data-i18n="pass_to">Destination</div>
+            </div>
+          </div>
+          <div class="pass-meta">
+            <div><div class="k" data-i18n="pass_program">PROGRAM</div><div class="v">Master's</div></div>
+            <div><div class="k" data-i18n="pass_funding">FUNDING</div><div class="v" data-i18n="pass_full">Full</div></div>
+            <div><div class="k" data-i18n="pass_seat">SEAT</div><div class="v">2026</div></div>
+          </div>
+        </div>
+        <div class="notch top"></div>
+        <div class="notch bottom"></div>
+        <div class="pass-stub">
+          <div class="qr"></div>
+          <div class="vert">MOURISCHOLAR</div>
+        </div>
+      </div>
+      <div class="pass-floater f2">🎓 <span data-i18n="pass_float2">5,000+ guides sold</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="ticket">
+      <div class="ticket-item"><div class="num">2,400+</div><div class="lbl" data-i18n="stat_students">Students Helped</div></div>
+      <div class="ticket-item"><div class="num">35+</div><div class="lbl" data-i18n="stat_countries">Countries</div></div>
+      <div class="ticket-item"><div class="num">89%</div><div class="lbl" data-i18n="stat_rate">Acceptance Rate</div></div>
+      <div class="ticket-item"><div class="num">3+</div><div class="lbl" data-i18n="stat_years">Years of Experience</div></div>
+      <div class="ticket-item"><div class="num">5,000+</div><div class="lbl" data-i18n="stat_guides">Guides Sold</div></div>
+      <div class="ticket-item"><div class="num">800+</div><div class="lbl" data-i18n="stat_consults">Consultations</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 data-i18n="why_h2">Why students choose MouriScholar</h2>
+      <p data-i18n="why_sub">Everything here comes from an application that actually worked — not generic advice copied from a blog.</p>
+    </div>
+    <div class="bento">
+      <div class="bento-card large">
+        <div class="top-row">
+          <div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+          <span class="badge" data-i18n="why_badge">Founder-tested</span>
+        </div>
+        <div>
+          <h4 data-i18n="why1_title">Built from a real accepted scholarship</h4>
+          <p data-i18n="why1_desc">Every guide is based on an actual successful application — the same documents, timelines and answers that got a real offer letter.</p>
+        </div>
+      </div>
+      <div class="bento-card">
+        <div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <h4 data-i18n="why2_title">Step-by-step, not guesswork</h4>
+        <p data-i18n="why2_desc">Exact steps in the order they matter.</p>
+      </div>
+      <div class="bento-card">
+        <div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h4 data-i18n="why3_title">WhatsApp support</h4>
+        <p data-i18n="why3_desc">Ask a real person, get a real answer.</p>
+      </div>
+      <div class="bento-card">
+        <div class="ic"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="6" width="14" height="12" rx="2"/><path d="M17 10l4-2v8l-4-2"/></svg></div>
+        <h4 data-i18n="why4_title">Google Meet consultation</h4>
+        <p data-i18n="why4_desc">Book a live session to review your file.</p>
+      </div>
+      <div class="bento-card">
+        <div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg></div>
+        <h4 data-i18n="why5_title">Always up to date</h4>
+        <p data-i18n="why5_desc">Deadlines and requirements re-checked often.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="products">
+  <div class="wrap">
+    <div class="sec-head-row">
+      <div class="sec-head">
+        <h2 data-i18n="prod_h2">Featured guides</h2>
+        <p data-i18n="prod_sub">Downloadable PDFs, templates and checklists — instant access, lifetime updates.</p>
+      </div>
+      <a href="#" class="btn btn-outline" data-i18n="prod_seeall">See All Products</a>
+    </div>
+    <div class="products" id="productGrid"></div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    <div class="sec-head center" style="margin-bottom:44px;">
+      <h2 data-i18n="testi_h2">What students say</h2>
+    </div>
+    <div class="testi-wrap">
+      <div class="testi-card" id="testiCard"></div>
+      <div class="testi-nav">
+        <button id="testiPrev" aria-label="Previous"><svg class="icon" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <div class="testi-dots" id="testiDots"></div>
+        <button id="testiNext" aria-label="Next"><svg class="icon" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="founder">
+  <div class="wrap founder-grid">
+    <div class="founder-portrait">
+      <div class="portrait-card">
+        <div class="portrait-photo"><svg class="icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <h4>Amina Mouri</h4>
+        <div class="role" data-i18n="founder_role">Founder, MouriScholar</div>
+        <p class="quote" data-i18n="founder_quote">"I applied for three years before I got my first yes. MouriScholar is everything I wish someone had handed me on day one."</p>
+      </div>
+    </div>
+    <div>
+      <div class="sec-head">
+        <h2 data-i18n="story_h2">How it all started</h2>
+      </div>
+      <div class="timeline">
+        <div class="t-item">
+          <div class="t-year">2019</div>
+          <h4 data-i18n="t1_title">The first rejection</h4>
+          <p data-i18n="t1_desc">A rushed application, a generic motivation letter, and a "we regret to inform you" email. It stung — and it taught me exactly what was missing.</p>
+        </div>
+        <div class="t-item">
+          <div class="t-year">2020 – 2021</div>
+          <h4 data-i18n="t2_title">Rebuilding from scratch</h4>
+          <p data-i18n="t2_desc">Two more rounds of applications, a rewritten CV, a proper timeline, and finally interviews that felt like conversations instead of interrogations.</p>
+        </div>
+        <div class="t-item">
+          <div class="t-year">2022</div>
+          <h4 data-i18n="t3_title">The acceptance letter</h4>
+          <p data-i18n="t3_desc">A fully funded offer — tuition, housing, and a monthly stipend. The same week, three friends asked me to help with theirs.</p>
+        </div>
+        <div class="t-item">
+          <div class="t-year">2023</div>
+          <h4 data-i18n="t4_title">Turning it into guides</h4>
+          <p data-i18n="t4_desc">Every document, checklist and answer I used got written down, tested with more students, and refined.</p>
+        </div>
+        <div class="t-item">
+          <div class="t-year">2024 – <span data-i18n="today">Today</span></div>
+          <h4 data-i18n="t5_title">MouriScholar</h4>
+          <p data-i18n="t5_desc">Now those guides help thousands of students across dozens of countries do the same thing, faster and with far less guesswork.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    <div class="sec-head center">
+      <h2 data-i18n="gallery_h2">Proof, not promises</h2>
+      <p data-i18n="gallery_sub">Real acceptance letters, visa approvals and admission offers from students who used these guides.</p>
+    </div>
+    <div class="gallery">
+      <div class="doc-tile tall" style="background:linear-gradient(160deg,#111827,#1f2937)">
+        <div class="stamp">APPROVED</div>
+        <div class="lines"><span></span><span></span></div>
+        <div class="cap" data-i18n="doc1">Scholarship acceptance letter</div>
+      </div>
+      <div class="doc-tile" style="background:linear-gradient(160deg,#F97316,#FB923C)">
+        <div class="stamp">VISA</div>
+        <div class="lines"><span></span><span></span></div>
+        <div class="cap" data-i18n="doc2">Student visa approval</div>
+      </div>
+      <div class="doc-tile" style="background:linear-gradient(160deg,#2563EB,#3B82F6)">
+        <div class="stamp">ADMIT</div>
+        <div class="lines"><span></span><span></span></div>
+        <div class="cap" data-i18n="doc3">University admission offer</div>
+      </div>
+      <div class="doc-tile" style="background:linear-gradient(160deg,#D4AF37,#E9C766)">
+        <div class="stamp">BOARDING</div>
+        <div class="lines"><span></span><span></span></div>
+        <div class="cap" data-i18n="doc4">Flight to campus</div>
+      </div>
+      <div class="doc-tile" style="background:linear-gradient(160deg,#22C55E,#4ADE80)">
+        <div class="stamp">FUNDED</div>
+        <div class="lines"><span></span><span></span></div>
+        <div class="cap" data-i18n="doc5">Full funding confirmation</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head center">
+      <h2 data-i18n="receive_h2">What's inside every purchase</h2>
+    </div>
+    <div class="receipt">
+      <div class="receipt-head">
+        <h4 data-i18n="receipt_title">Your Scholarship Kit</h4>
+        <p data-i18n="receipt_sub">Delivered instantly after payment confirmation</p>
+      </div>
+      <div class="receipt-item"><div class="chk"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div><span data-i18n="r1">Complete PDF guide</span></div>
+      <div class="receipt-item"><div class="chk"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div><span data-i18n="r2">Editable templates</span></div>
+      <div class="receipt-item"><div class="chk"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div><span data-i18n="r3">Application checklist</span></div>
+      <div class="receipt-item"><div class="chk"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div><span data-i18n="r4">CV template</span></div>
+      <div class="receipt-item"><div class="chk"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div><span data-i18n="r5">Motivation letter template</span></div>
+      <div class="receipt-item"><div class="chk"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div><span data-i18n="r6">Interview question bank</span></div>
+      <div class="receipt-item"><div class="chk"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div><span data-i18n="r7">WhatsApp consultation</span></div>
+      <div class="receipt-item"><div class="chk"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div><span data-i18n="r8">Google Meet session</span></div>
+      <div class="receipt-item"><div class="chk"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div><span data-i18n="r9">Full scholarship roadmap</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="faq">
+  <div class="wrap">
+    <div class="sec-head center">
+      <h2 data-i18n="faq_h2">Frequently asked questions</h2>
+    </div>
+    <div class="faq" id="faqList"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="final-cta">
+      <h2 data-i18n="cta_h2">Ready to study abroad?</h2>
+      <p data-i18n="cta_sub">Get the exact guide, templates and support you need to submit a stronger application this year.</p>
+      <a href="#products" class="btn btn-primary" data-i18n="hero_cta1">Browse Products</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <div class="brand">
+          <span class="brand-mark"><svg class="icon" viewBox="0 0 24 24"><path d="M22 10 12 4 2 10l10 6 10-6Z"/></svg></span>
+          MouriScholar
+        </div>
+        <p data-i18n="foot_desc">Your gateway to scholarships and studying abroad. Practical guides, real templates, direct support.</p>
+        <div class="foot-social">
+          <a href="#" aria-label="WhatsApp"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/></svg></a>
+          <a href="#" aria-label="Email"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h5 data-i18n="foot_links">Quick Links</h5>
+        <ul>
+          <li><a href="#" data-i18n="nav_home">Home</a></li>
+          <li><a href="#products" data-i18n="nav_products">Products</a></li>
+          <li><a href="#founder" data-i18n="nav_about">About</a></li>
+          <li><a href="#faq" data-i18n="nav_faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5 data-i18n="foot_products">Products</h5>
+        <ul>
+          <li><a href="#" data-i18n="fp1">Scholarship Guides</a></li>
+          <li><a href="#" data-i18n="fp2">CV &amp; Cover Letters</a></li>
+          <li><a href="#" data-i18n="fp3">Visa Preparation</a></li>
+          <li><a href="#" data-i18n="fp4">Interview Prep</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5 data-i18n="foot_contact">Contact</h5>
+        <ul>
+          <li>WhatsApp: +222 31 70 88 35</li>
+          <li>hello@mourischolar.com</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span data-i18n="foot_copy">© 2026 MouriScholar. All rights reserved.</span>
+      <span data-i18n="foot_tag">Your Gateway to Scholarships and Studying Abroad</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------------- i18n ---------------- */
+const translations = {
+  en: {
+    nav_home:"Home", nav_products:"Products", nav_about:"About", nav_faq:"FAQ", nav_cta:"Browse Products",
+    hero_h1:"Unlock Fully Funded Scholarships Around the World.",
+    hero_sub:"Practical guides, real templates and direct support — written by someone who went through the process and got in.",
+    hero_cta1:"Browse Products", hero_cta2:"Start Your Journey",
+    hero_trust:"Joined by 2,400+ students across 35 countries",
+    pass_status:"ACCEPTED", pass_from:"Your country", pass_to:"Destination", pass_program:"PROGRAM", pass_funding:"FUNDING", pass_full:"Full", pass_seat:"SEAT",
+    pass_float1:"Application accepted", pass_float2:"5,000+ guides sold",
+    stat_students:"Students Helped", stat_countries:"Countries", stat_rate:"Acceptance Rate", stat_years:"Years of Experience", stat_guides:"Guides Sold", stat_consults:"Consultations",
+    why_h2:"Why students choose MouriScholar", why_sub:"Everything here comes from an application that actually worked — not generic advice copied from a blog.",
+    why_badge:"Founder-tested",
+    why1_title:"Built from a real accepted scholarship", why1_desc:"Every guide is based on an actual successful application — the same documents, timelines and answers that got a real offer letter.",
+    why2_title:"Step-by-step, not guesswork", why2_desc:"Exact steps in the order they matter.",
+    why3_title:"WhatsApp support", why3_desc:"Ask a real person, get a real answer.",
+    why4_title:"Google Meet consultation", why4_desc:"Book a live session to review your file.",
+    why5_title:"Always up to date", why5_desc:"Deadlines and requirements re-checked often.",
+    prod_h2:"Featured guides", prod_sub:"Downloadable PDFs, templates and checklists — instant access, lifetime updates.", prod_seeall:"See All Products",
+    testi_h2:"What students say",
+    founder_role:"Founder, MouriScholar", founder_quote:"\\"I applied for three years before I got my first yes. MouriScholar is everything I wish someone had handed me on day one.\\"",
+    story_h2:"How it all started",
+    t1_title:"The first rejection", t1_desc:"A rushed application, a generic motivation letter, and a \\"we regret to inform you\\" email. It stung — and it taught me exactly what was missing.",
+    t2_title:"Rebuilding from scratch", t2_desc:"Two more rounds of applications, a rewritten CV, a proper timeline, and finally interviews that felt like conversations instead of interrogations.",
+    t3_title:"The acceptance letter", t3_desc:"A fully funded offer — tuition, housing, and a monthly stipend. The same week, three friends asked me to help with theirs.",
+    t4_title:"Turning it into guides", t4_desc:"Every document, checklist and answer I used got written down, tested with more students, and refined.",
+    t5_title:"MouriScholar", t5_desc:"Now those guides help thousands of students across dozens of countries do the same thing, faster and with far less guesswork.",
+    today:"Today",
+    gallery_h2:"Proof, not promises", gallery_sub:"Real acceptance letters, visa approvals and admission offers from students who used these guides.",
+    doc1:"Scholarship acceptance letter", doc2:"Student visa approval", doc3:"University admission offer", doc4:"Flight to campus", doc5:"Full funding confirmation",
+    receive_h2:"What's inside every purchase", receipt_title:"Your Scholarship Kit", receipt_sub:"Delivered instantly after payment confirmation",
+    r1:"Complete PDF guide", r2:"Editable templates", r3:"Application checklist", r4:"CV template", r5:"Motivation letter template", r6:"Interview question bank", r7:"WhatsApp consultation", r8:"Google Meet session", r9:"Full scholarship roadmap",
+    faq_h2:"Frequently asked questions",
+    cta_h2:"Ready to study abroad?", cta_sub:"Get the exact guide, templates and support you need to submit a stronger application this year.",
+    foot_desc:"Your gateway to scholarships and studying abroad. Practical guides, real templates, direct support.",
+    foot_links:"Quick Links", foot_products:"Products", foot_contact:"Contact",
+    fp1:"Scholarship Guides", fp2:"CV & Cover Letters", fp3:"Visa Preparation", fp4:"Interview Prep",
+    foot_copy:"© 2026 MouriScholar. All rights reserved.", foot_tag:"Your Gateway to Scholarships and Studying Abroad"
+  },
+  fr: {
+    nav_home:"Accueil", nav_products:"Produits", nav_about:"À propos", nav_faq:"FAQ", nav_cta:"Voir les produits",
+    hero_h1:"Décrochez des bourses entièrement financées, partout dans le monde.",
+    hero_sub:"Des guides pratiques, de vrais modèles et un accompagnement direct, écrits par quelqu'un qui a vécu ce parcours et réussi.",
+    hero_cta1:"Voir les produits", hero_cta2:"Commencez votre parcours",
+    hero_trust:"Déjà utilisé par plus de 2 400 étudiants dans 35 pays",
+    pass_status:"ACCEPTÉ", pass_from:"Votre pays", pass_to:"Destination", pass_program:"PROGRAMME", pass_funding:"FINANCEMENT", pass_full:"Total", pass_seat:"PLACE",
+    pass_float1:"Candidature acceptée", pass_float2:"5 000+ guides vendus",
+    stat_students:"Étudiants aidés", stat_countries:"Pays", stat_rate:"Taux d'admission", stat_years:"Années d'expérience", stat_guides:"Guides vendus", stat_consults:"Consultations",
+    why_h2:"Pourquoi les étudiants choisissent MouriScholar", why_sub:"Tout ce que vous trouvez ici vient d'une candidature qui a réellement fonctionné — pas de conseils génériques copiés d'un blog.",
+    why_badge:"Testé par la fondatrice",
+    why1_title:"Basé sur une vraie bourse obtenue", why1_desc:"Chaque guide s'appuie sur une candidature réellement acceptée — les mêmes documents, délais et réponses ayant permis une vraie offre.",
+    why2_title:"Étape par étape, sans tâtonner", why2_desc:"Les étapes exactes, dans le bon ordre.",
+    why3_title:"Support WhatsApp", why3_desc:"Posez vos questions à une vraie personne.",
+    why4_title:"Consultation Google Meet", why4_desc:"Réservez une session pour revoir votre dossier.",
+    why5_title:"Toujours à jour", why5_desc:"Délais et conditions vérifiés régulièrement.",
+    prod_h2:"Guides en vedette", prod_sub:"PDF, modèles et check-lists téléchargeables — accès immédiat, mises à jour à vie.", prod_seeall:"Voir tous les produits",
+    testi_h2:"Ce que disent nos étudiants",
+    founder_role:"Fondatrice, MouriScholar", founder_quote:"\\"J'ai postulé pendant trois ans avant mon premier oui. MouriScholar, c'est tout ce que j'aurais aimé avoir dès le premier jour.\\"",
+    story_h2:"Comment tout a commencé",
+    t1_title:"Le premier refus", t1_desc:"Une candidature bâclée, une lettre de motivation générique, et un e-mail de refus. Ça a fait mal — et ça m'a montré exactement ce qui manquait.",
+    t2_title:"Tout reconstruire", t2_desc:"Deux nouvelles candidatures, un CV réécrit, un vrai calendrier, et enfin des entretiens qui ressemblaient à des conversations.",
+    t3_title:"La lettre d'acceptation", t3_desc:"Une offre entièrement financée — frais de scolarité, logement et allocation mensuelle. La même semaine, trois amis m'ont demandé de l'aide.",
+    t4_title:"Transformer ça en guides", t4_desc:"Chaque document, check-list et réponse utilisés ont été écrits, testés avec d'autres étudiants, puis améliorés.",
+    t5_title:"MouriScholar", t5_desc:"Aujourd'hui, ces guides aident des milliers d'étudiants dans des dizaines de pays à faire la même chose, plus vite et avec beaucoup moins d'incertitude.",
+    today:"Aujourd'hui",
+    gallery_h2:"Des preuves, pas des promesses", gallery_sub:"De vraies lettres d'acceptation, visas et offres d'admission d'étudiants ayant utilisé ces guides.",
+    doc1:"Lettre d'acceptation de bourse", doc2:"Visa étudiant approuvé", doc3:"Offre d'admission universitaire", doc4:"Vol vers le campus", doc5:"Confirmation de financement total",
+    receive_h2:"Ce que vous recevez", receipt_title:"Votre kit bourse", receipt_sub:"Livré instantanément après confirmation du paiement",
+    r1:"Guide PDF complet", r2:"Modèles modifiables", r3:"Check-list de candidature", r4:"Modèle de CV", r5:"Modèle de lettre de motivation", r6:"Banque de questions d'entretien", r7:"Consultation WhatsApp", r8:"Session Google Meet", r9:"Feuille de route complète",
+    faq_h2:"Questions fréquentes",
+    cta_h2:"Prêt à étudier à l'étranger ?", cta_sub:"Obtenez le guide, les modèles et le soutien nécessaires pour soumettre un dossier plus solide cette année.",
+    foot_desc:"Votre passerelle vers les bourses et les études à l'étranger. Guides pratiques, vrais modèles, accompagnement direct.",
+    foot_links:"Liens rapides", foot_products:"Produits", foot_contact:"Contact",
+    fp1:"Guides de bourses", fp2:"CV et lettres de motivation", fp3:"Préparation visa", fp4:"Préparation entretien",
+    foot_copy:"© 2026 MouriScholar. Tous droits réservés.", foot_tag:"Votre passerelle vers les bourses et les études à l'étranger"
+  },
+  ar: {
+    nav_home:"الرئيسية", nav_products:"المنتجات", nav_about:"من نحن", nav_faq:"الأسئلة الشائعة", nav_cta:"تصفح المنتجات",
+    hero_h1:"احصل على منح دراسية ممولة بالكامل حول العالم.",
+    hero_sub:"أدلة عملية، نماذج حقيقية، ودعم مباشر — كتبها شخص عاش هذه التجربة ونجح فيها.",
+    hero_cta1:"تصفح المنتجات", hero_cta2:"ابدأ رحلتك",
+    hero_trust:"انضم إلينا أكثر من 2400 طالب في 35 دولة",
+    pass_status:"مقبول", pass_from:"بلدك", pass_to:"الوجهة", pass_program:"البرنامج", pass_funding:"التمويل", pass_full:"كامل", pass_seat:"المقعد",
+    pass_float1:"تم قبول الطلب", pass_float2:"أكثر من 5000 دليل مباع",
+    stat_students:"طالب تمت مساعدته", stat_countries:"دولة", stat_rate:"نسبة القبول", stat_years:"سنوات خبرة", stat_guides:"دليل مباع", stat_consults:"استشارة",
+    why_h2:"لماذا يختار الطلاب مواريسكولار", why_sub:"كل ما هنا مبني على تجربة قبول حقيقية — وليس نصائح عامة منسوخة من مدونة.",
+    why_badge:"مجرَّب من المؤسِّسة",
+    why1_title:"مبني على منحة مقبولة فعلاً", why1_desc:"كل دليل مبني على تجربة قبول حقيقية — نفس المستندات والجداول الزمنية والإجابات التي أدت إلى قبول فعلي.",
+    why2_title:"خطوة بخطوة دون تخمين", why2_desc:"الخطوات الدقيقة بالترتيب الصحيح.",
+    why3_title:"دعم عبر واتساب", why3_desc:"اسأل شخصًا حقيقيًا واحصل على إجابة حقيقية.",
+    why4_title:"استشارة عبر غوغل ميت", why4_desc:"احجز جلسة لمراجعة ملفك.",
+    why5_title:"محدث دائمًا", why5_desc:"يتم مراجعة المواعيد والشروط بانتظام.",
+    prod_h2:"أدلة مميزة", prod_sub:"ملفات PDF ونماذج وقوائم تحقق قابلة للتحميل — وصول فوري وتحديثات مدى الحياة.", prod_seeall:"عرض كل المنتجات",
+    testi_h2:"ماذا يقول طلابنا",
+    founder_role:"مؤسسة مواريسكولار", founder_quote:"\\"تقدمت لثلاث سنوات قبل أن أحصل على أول قبول. مواريسكولار هو كل ما كنت أتمنى أن يقدمه لي أحد منذ اليوم الأول.\\"",
+    story_h2:"كيف بدأت القصة",
+    t1_title:"الرفض الأول", t1_desc:"طلب متسرع، خطاب دافع عام، ورسالة اعتذار. كان الأمر مؤلمًا — لكنه علّمني بالضبط ما كان ناقصًا.",
+    t2_title:"إعادة البناء من الصفر", t2_desc:"جولتان إضافيتان من التقديم، سيرة ذاتية معاد كتابتها، جدول زمني واضح، ومقابلات شعرت أخيرًا وكأنها حوارات.",
+    t3_title:"خطاب القبول", t3_desc:"عرض ممول بالكامل — رسوم دراسية وسكن وراتب شهري. في نفس الأسبوع طلب مني ثلاثة أصدقاء المساعدة.",
+    t4_title:"تحويلها إلى أدلة", t4_desc:"تم توثيق كل مستند وقائمة تحقق وإجابة استخدمتها، واختبارها مع طلاب آخرين، ثم تحسينها.",
+    t5_title:"مواريسكولار", t5_desc:"اليوم تساعد هذه الأدلة آلاف الطلاب في عشرات الدول على فعل الشيء نفسه، بسرعة أكبر وتخمين أقل بكثير.",
+    today:"اليوم",
+    gallery_h2:"دليل لا وعود", gallery_sub:"خطابات قبول وتأشيرات وعروض جامعية حقيقية من طلاب استخدموا هذه الأدلة.",
+    doc1:"خطاب قبول منحة", doc2:"موافقة تأشيرة طالب", doc3:"عرض قبول جامعي", doc4:"رحلة إلى الحرم الجامعي", doc5:"تأكيد التمويل الكامل",
+    receive_h2:"ما ستحصل عليه في كل عملية شراء", receipt_title:"حزمة المنحة الخاصة بك", receipt_sub:"يتم التسليم فورًا بعد تأكيد الدفع",
+    r1:"دليل PDF كامل", r2:"نماذج قابلة للتعديل", r3:"قائمة تحقق للتقديم", r4:"نموذج سيرة ذاتية", r5:"نموذج خطاب دافع", r6:"بنك أسئلة المقابلة", r7:"استشارة عبر واتساب", r8:"جلسة غوغل ميت", r9:"خارطة طريق كاملة للمنحة",
+    faq_h2:"الأسئلة الشائعة",
+    cta_h2:"هل أنت مستعد للدراسة في الخارج؟", cta_sub:"احصل على الدليل والنماذج والدعم اللازم لتقديم طلب أقوى هذا العام.",
+    foot_desc:"بوابتك إلى المنح الدراسية والدراسة في الخارج. أدلة عملية، نماذج حقيقية، دعم مباشر.",
+    foot_links:"روابط سريعة", foot_products:"المنتجات", foot_contact:"تواصل معنا",
+    fp1:"أدلة المنح", fp2:"السيرة الذاتية وخطابات التقديم", fp3:"تحضير التأشيرة", fp4:"تحضير المقابلة",
+    foot_copy:"© 2026 مواريسكولار. جميع الحقوق محفوظة.", foot_tag:"بوابتك إلى المنح الدراسية والدراسة في الخارج"
+  }
+};
+
+function applyLang(lang){
+  const dict = translations[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(dict[key] !== undefined) el.innerHTML = dict[key];
+  });
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.body.classList.toggle('lang-ar', lang === 'ar');
+  document.querySelectorAll('#langSwitch button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+  renderProducts(lang);
+  renderTestimonials(lang);
+  renderFaq(lang);
+}
+document.getElementById('langSwitch').addEventListener('click', e=>{
+  const btn = e.target.closest('button');
+  if(btn) applyLang(btn.dataset.lang);
+});
+
+/* ---------------- Products ---------------- */
+const productsData = {
+  en: [
+    {cat:"Saudi Scholarships", title:"Saudi Scholarship Master Guide", desc:"The complete roadmap for government-funded programs in Saudi Arabia, from eligibility to visa.", price:"$19", rating:5, grad:["#F97316","#FB923C"]},
+    {cat:"PhD", title:"PhD Application Kit", desc:"Research proposal templates, professor outreach emails, and funding-search strategy.", price:"$24", rating:5, grad:["#2563EB","#3B82F6"]},
+    {cat:"Career Docs", title:"CV & Motivation Letter Bundle", desc:"Editable templates plus line-by-line guidance for both documents.", price:"$14", rating:4, grad:["#111827","#374151"]},
+    {cat:"Visa", title:"Visa Preparation Checklist", desc:"Every document embassies ask for, organized by country and program type.", price:"$9", rating:5, grad:["#22C55E","#4ADE80"]},
+    {cat:"Interviews", title:"Interview Preparation Guide", desc:"Real questions from scholarship panels, with strong sample answers.", price:"$12", rating:4, grad:["#D4AF37","#E9C766"]},
+    {cat:"Directory", title:"Fully-Funded Programs Directory", desc:"200+ verified fully funded programs updated for the current admission cycle.", price:"$29", rating:5, grad:["#FB923C","#F97316"]}
+  ],
+  fr: [
+    {cat:"Bourses saoudiennes", title:"Guide complet des bourses saoudiennes", desc:"La feuille de route complète pour les programmes financés par l'État en Arabie saoudite, de l'éligibilité au visa.", price:"19 $", rating:5, grad:["#F97316","#FB923C"]},
+    {cat:"Doctorat", title:"Kit de candidature au doctorat", desc:"Modèles de proposition de recherche, e-mails aux professeurs, et stratégie de recherche de financement.", price:"24 $", rating:5, grad:["#2563EB","#3B82F6"]},
+    {cat:"Documents pro", title:"Pack CV & lettre de motivation", desc:"Modèles modifiables avec des conseils détaillés pour les deux documents.", price:"14 $", rating:4, grad:["#111827","#374151"]},
+    {cat:"Visa", title:"Check-list de préparation du visa", desc:"Tous les documents demandés par les ambassades, classés par pays et type de programme.", price:"9 $", rating:5, grad:["#22C55E","#4ADE80"]},
+    {cat:"Entretiens", title:"Guide de préparation aux entretiens", desc:"Des questions réelles posées par les jurys de bourses, avec des exemples de réponses solides.", price:"12 $", rating:4, grad:["#D4AF37","#E9C766"]},
+    {cat:"Annuaire", title:"Annuaire des programmes entièrement financés", desc:"Plus de 200 programmes vérifiés, mis à jour pour le cycle d'admission actuel.", price:"29 $", rating:5, grad:["#FB923C","#F97316"]}
+  ],
+  ar: [
+    {cat:"المنح السعودية", title:"الدليل الشامل للمنح السعودية", desc:"خارطة طريق كاملة للبرامج الممولة حكوميًا في السعودية، من الأهلية إلى التأشيرة.", price:"19$", rating:5, grad:["#F97316","#FB923C"]},
+    {cat:"الدكتوراه", title:"حزمة التقديم للدكتوراه", desc:"نماذج مقترح بحثي، رسائل تواصل مع الأساتذة، واستراتيجية البحث عن التمويل.", price:"24$", rating:5, grad:["#2563EB","#3B82F6"]},
+    {cat:"مستندات مهنية", title:"حزمة السيرة الذاتية وخطاب الدافع", desc:"نماذج قابلة للتعديل مع إرشادات مفصلة لكلا المستندين.", price:"14$", rating:4, grad:["#111827","#374151"]},
+    {cat:"التأشيرة", title:"قائمة تحقق لتحضير التأشيرة", desc:"جميع المستندات التي تطلبها السفارات، مرتبة حسب الدولة ونوع البرنامج.", price:"9$", rating:5, grad:["#22C55E","#4ADE80"]},
+    {cat:"المقابلات", title:"دليل تحضير المقابلة", desc:"أسئلة حقيقية من لجان المنح، مع نماذج إجابات قوية.", price:"12$", rating:4, grad:["#D4AF37","#E9C766"]},
+    {cat:"الدليل الشامل", title:"دليل البرامج الممولة بالكامل", desc:"أكثر من 200 برنامج موثق ومحدث لدورة القبول الحالية.", price:"29$", rating:5, grad:["#FB923C","#F97316"]}
+  ]
+};
+function starIcon(){ return '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>'; }
+function renderProducts(lang){
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = '';
+  const viewLbl = {en:"View Details", fr:"Voir les détails", ar:"عرض التفاصيل"}[lang];
+  productsData[lang].forEach(p=>{
+    const stars = Array.from({length:5}).map((_,i)=> `<span style="opacity:${i<p.rating?1:0.25}">${starIcon()}</span>`).join('');
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+      <div class="product-cover" style="background:linear-gradient(150deg, ${p.grad[0]}, ${p.grad[1]})">
+        <span class="cat">${p.cat}</span>
+        <svg class="icon" viewBox="0 0 24 24" style="width:38px;height:38px;color:rgba(255,255,255,0.85)"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      </div>
+      <div class="product-body">
+        <div class="product-title">${p.title}</div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="product-meta"><span class="stars">${stars}</span><span>·</span><span>${p.rating}.0</span></div>
+        <div class="product-foot"><span class="price">${p.price}</span><a href="#" class="btn btn-dark">${viewLbl}</a></div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+/* ---------------- Testimonials ---------------- */
+const testimonialsData = {
+  en: [
+    {q:"I got my full scholarship to Germany within one application cycle. The templates saved me weeks.", name:"Fatima B.", loc:"Nouakchott, Mauritania → Berlin, Germany", init:"FB", grad:["#F97316","#FB923C"]},
+    {q:"The visa checklist alone was worth it — I didn't miss a single document.", name:"Yacoub S.", loc:"Dakar, Senegal → Riyadh, Saudi Arabia", init:"YS", grad:["#2563EB","#3B82F6"]},
+    {q:"My WhatsApp questions got answered the same day, every time. That support made the difference.", name:"Mariam T.", loc:"Bamako, Mali → Montreal, Canada", init:"MT", grad:["#D4AF37","#E9C766"]},
+    {q:"The interview guide had almost the exact questions my panel asked. I felt ready.", name:"Ousmane D.", loc:"Nouakchott, Mauritania → Paris, France", init:"OD", grad:["#22C55E","#4ADE80"]}
+  ],
+  fr: [
+    {q:"J'ai obtenu ma bourse complète pour l'Allemagne dès mon premier cycle de candidature. Les modèles m'ont fait gagner des semaines.", name:"Fatima B.", loc:"Nouakchott, Mauritanie → Berlin, Allemagne", init:"FB", grad:["#F97316","#FB923C"]},
+    {q:"La check-list visa à elle seule valait le prix — je n'ai manqué aucun document.", name:"Yacoub S.", loc:"Dakar, Sénégal → Riyad, Arabie saoudite", init:"YS", grad:["#2563EB","#3B82F6"]},
+    {q:"Mes questions sur WhatsApp trouvaient une réponse le jour même, à chaque fois. Ce soutien a tout changé.", name:"Mariam T.", loc:"Bamako, Mali → Montréal, Canada", init:"MT", grad:["#D4AF37","#E9C766"]},
+    {q:"Le guide d'entretien contenait presque exactement les questions posées par mon jury. Je me suis senti prêt.", name:"Ousmane D.", loc:"Nouakchott, Mauritanie → Paris, France", init:"OD", grad:["#22C55E","#4ADE80"]}
+  ],
+  ar: [
+    {q:"حصلت على منحتي الكاملة لألمانيا في دورة تقديم واحدة. النماذج وفرت علي أسابيع من العمل.", name:"فاطمة ب.", loc:"نواكشوط، موريتانيا ← برلين، ألمانيا", init:"فب", grad:["#F97316","#FB923C"]},
+    {q:"قائمة تحقق التأشيرة وحدها كانت تستحق الثمن — لم أفوّت أي مستند.", name:"يعقوب س.", loc:"داكار، السنغال ← الرياض، السعودية", init:"يس", grad:["#2563EB","#3B82F6"]},
+    {q:"كانت أسئلتي على واتساب تُجاب في نفس اليوم دائمًا. هذا الدعم صنع الفرق.", name:"مريم ت.", loc:"باماكو، مالي ← مونتريال، كندا", init:"مت", grad:["#D4AF37","#E9C766"]},
+    {q:"دليل المقابلة تضمن تقريبًا نفس الأسئلة التي طرحتها اللجنة. شعرت بالجاهزية التامة.", name:"عثمان د.", loc:"نواكشوط، موريتانيا ← باريس، فرنسا", init:"عد", grad:["#22C55E","#4ADE80"]}
+  ]
+};
+let testiIndex = 0;
+function renderTestimonials(lang){
+  const list = testimonialsData[lang];
+  testiIndex = Math.min(testiIndex, list.length-1);
+  const t = list[testiIndex];
+  document.getElementById('testiCard').innerHTML = `
+    <svg class="icon q-icon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M9.5 4C6 4 3 7 3 11.2c0 3.4 2 5.6 4.7 5.6 1.9 0 3.3-1.4 3.3-3.2 0-1.7-1.2-3-2.9-3-.3 0-.6 0-.8.1.2-2.4 2.2-4.3 4.7-4.6L11.5 4H9.5zm10 0c-3.5 0-6.5 3-6.5 7.2 0 3.4 2 5.6 4.7 5.6 1.9 0 3.3-1.4 3.3-3.2 0-1.7-1.2-3-2.9-3-.3 0-.6 0-.8.1.2-2.4 2.2-4.3 4.7-4.6L21.5 4h-2z"/></svg>
+    <p class="testi-quote">${t.q}</p>
+    <div class="testi-person">
+      <div class="testi-avatar" style="background:linear-gradient(135deg, ${t.grad[0]}, ${t.grad[1]})">${t.init}</div>
+      <div style="text-align:start">
+        <div class="testi-name">${t.name}</div>
+        <div class="testi-loc">${t.loc}</div>
+      </div>
+    </div>`;
+  const dots = document.getElementById('testiDots');
+  dots.innerHTML = list.map((_,i)=>`<span class="${i===testiIndex?'active':''}" data-i="${i}"></span>`).join('');
+}
+document.getElementById('testiPrev').addEventListener('click', ()=>{
+  const lang = document.documentElement.lang || 'en';
+  testiIndex = (testiIndex - 1 + testimonialsData[lang].length) % testimonialsData[lang].length;
+  renderTestimonials(lang);
+});
+document.getElementById('testiNext').addEventListener('click', ()=>{
+  const lang = document.documentElement.lang || 'en';
+  testiIndex = (testiIndex + 1) % testimonialsData[lang].length;
+  renderTestimonials(lang);
+});
+document.getElementById('testiDots').addEventListener('click', e=>{
+  const dot = e.target.closest('span');
+  if(dot){ testiIndex = parseInt(dot.dataset.i); renderTestimonials(document.documentElement.lang || 'en'); }
+});
+
+/* ---------------- FAQ ---------------- */
+const faqData = {
+  en: [
+    {q:"Do I need to create an account to buy a guide?", a:"No. There are no accounts or logins for customers — you browse, choose a product, and pay directly via WhatsApp or the listed payment methods."},
+    {q:"How do I receive my PDF after paying?", a:"After you send your payment screenshot on WhatsApp, your files are delivered manually to you — usually within a few hours."},
+    {q:"Are these guides only for Saudi scholarships?", a:"No. While Saudi programs are a specialty, guides also cover international and fully funded scholarships, visas, and university applications worldwide."},
+    {q:"What if my country isn't specifically covered?", a:"The frameworks — CVs, motivation letters, interviews, visas — apply broadly. The WhatsApp and Google Meet support help you adapt them to your specific case."},
+    {q:"Can I leave a review without an account?", a:"Yes. Every product page has an open review form — just add your name, country, rating and comment."}
+  ],
+  fr: [
+    {q:"Dois-je créer un compte pour acheter un guide ?", a:"Non. Il n'y a aucun compte ni connexion pour les clients — vous parcourez, choisissez un produit et payez directement via WhatsApp ou les moyens de paiement indiqués."},
+    {q:"Comment je reçois mon PDF après le paiement ?", a:"Après l'envoi de votre capture d'écran de paiement sur WhatsApp, vos fichiers vous sont livrés manuellement, généralement en quelques heures."},
+    {q:"Ces guides concernent-ils uniquement les bourses saoudiennes ?", a:"Non. Bien que les programmes saoudiens soient une spécialité, les guides couvrent aussi les bourses internationales, les visas et les candidatures universitaires dans le monde entier."},
+    {q:"Et si mon pays n'est pas spécifiquement couvert ?", a:"Les méthodes — CV, lettres de motivation, entretiens, visas — s'appliquent largement. Le support WhatsApp et Google Meet vous aide à les adapter à votre cas."},
+    {q:"Puis-je laisser un avis sans compte ?", a:"Oui. Chaque page produit propose un formulaire d'avis ouvert — indiquez simplement votre nom, pays, note et commentaire."}
+  ],
+  ar: [
+    {q:"هل أحتاج إلى إنشاء حساب لشراء دليل؟", a:"لا. لا توجد حسابات أو تسجيل دخول للعملاء — تتصفح وتختار المنتج وتدفع مباشرة عبر واتساب أو طرق الدفع المذكورة."},
+    {q:"كيف أستلم ملف PDF بعد الدفع؟", a:"بعد إرسال لقطة شاشة الدفع عبر واتساب، يتم تسليم ملفاتك يدويًا، عادةً خلال بضع ساعات."},
+    {q:"هل هذه الأدلة خاصة بالمنح السعودية فقط؟", a:"لا. رغم أن البرامج السعودية تخصص رئيسي، تغطي الأدلة أيضًا المنح الدولية والممولة بالكامل، والتأشيرات، وطلبات الجامعات حول العالم."},
+    {q:"ماذا لو لم تكن دولتي مذكورة تحديدًا؟", a:"الأطر العامة — السيرة الذاتية، خطابات الدافع، المقابلات، التأشيرات — تنطبق بشكل واسع. دعم واتساب وغوغل ميت يساعدك على تكييفها مع حالتك."},
+    {q:"هل يمكنني ترك تقييم دون حساب؟", a:"نعم. كل صفحة منتج تحتوي على نموذج تقييم مفتوح — فقط أضف اسمك ودولتك وتقييمك وتعليقك."}
+  ]
+};
+function renderFaq(lang){
+  const list = document.getElementById('faqList');
+  list.innerHTML = '';
+  faqData[lang].forEach((item, i)=>{
+    const div = document.createElement('div');
+    div.className = 'faq-item' + (i===0 ? ' open' : '');
+    div.innerHTML = `
+      <button class="faq-q">
+        <span>${item.q}</span>
+        <svg class="icon" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="faq-a"><p>${item.a}</p></div>`;
+    div.querySelector('.faq-q').addEventListener('click', ()=>{
+      const isOpen = div.classList.contains('open');
+      list.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'));
+      if(!isOpen) div.classList.add('open');
+    });
+    list.appendChild(div);
+  });
+}
+
+/* ---------------- Sticky nav shadow + mobile ---------------- */
+window.addEventListener('scroll', ()=>{
+  document.getElementById('siteHeader').classList.toggle('scrolled', window.scrollY > 8);
+});
+
+/* ---------------- init ---------------- */
+applyLang('en');
+</script>
+</body>
+</html>
