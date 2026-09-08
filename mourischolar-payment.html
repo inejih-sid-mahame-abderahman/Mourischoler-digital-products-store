@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complete Your Purchase — MouriScholar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Cairo:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#111827;
+    --ink-soft:#4B5563;
+    --cream:#FDFBF6;
+    --surface:#F9FAFB;
+    --border:#E5E7EB;
+    --orange:#F97316;
+    --amber:#FB923C;
+    --gold:#D4AF37;
+    --blue:#2563EB;
+    --success:#22C55E;
+    --white:#FFFFFF;
+    --font-head:'Manrope', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --radius:20px;
+    --radius-sm:12px;
+    --container:1160px;
+  }
+  body.lang-ar{ --font-head:'Cairo', sans-serif; --font-body:'Cairo', sans-serif; }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{ margin:0; font-family:var(--font-body); color:var(--ink); background:var(--cream); -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  button{font-family:inherit; cursor:pointer;}
+  h1,h2,h3,h4{font-family:var(--font-head); margin:0; letter-spacing:-0.02em; line-height:1.1;}
+  p{margin:0;}
+  .wrap{max-width:var(--container); margin:0 auto; padding:0 28px;}
+  .icon{width:22px; height:22px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0;}
+
+  /* ---------- NAV ---------- */
+  header{ position:sticky; top:0; z-index:100; background:rgba(253,251,246,0.86); backdrop-filter:blur(10px); border-bottom:1px solid transparent; transition:border-color .25s ease, box-shadow .25s ease; }
+  header.scrolled{ border-color:var(--border); box-shadow:0 1px 0 rgba(17,24,39,0.02); }
+  nav.wrap{ display:flex; align-items:center; justify-content:space-between; height:78px; }
+  .brand{ display:flex; align-items:center; gap:10px; font-family:var(--font-head); font-weight:800; font-size:1.28rem; }
+  .brand-mark{ width:34px; height:34px; border-radius:9px; background:linear-gradient(140deg,var(--orange),var(--amber)); display:flex; align-items:center; justify-content:center; color:#fff; }
+  .brand-mark svg{width:19px;height:19px;}
+  .nav-links{ display:flex; align-items:center; gap:34px; font-size:0.95rem; font-weight:600; color:var(--ink-soft); }
+  .nav-links a{ transition:color .15s ease; }
+  .nav-links a:hover{ color:var(--ink); }
+  .nav-right{ display:flex; align-items:center; gap:16px; }
+  .lang-switch{ display:flex; background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:3px; gap:2px; }
+  .lang-switch button{ border:none; background:transparent; padding:6px 12px; border-radius:999px; font-size:0.8rem; font-weight:700; color:var(--ink-soft); }
+  .lang-switch button.active{ background:var(--ink); color:#fff; }
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 22px; border-radius:11px; font-weight:700; font-size:0.93rem; border:1.5px solid transparent; white-space:nowrap; transition:transform .15s ease, box-shadow .15s ease, background .15s ease; }
+  .btn:active{ transform:scale(0.97); }
+  .btn-primary{ background:var(--orange); color:#fff; box-shadow:0 8px 20px -8px rgba(249,115,22,0.6); }
+  .btn-primary:hover{ background:#EA6A0E; box-shadow:0 10px 24px -8px rgba(249,115,22,0.75); }
+  .btn-outline{ background:transparent; border-color:var(--ink); color:var(--ink); }
+  .btn-outline:hover{ background:var(--ink); color:#fff; }
+  .btn-dark{ background:var(--ink); color:#fff; }
+  .btn-dark:hover{ background:#0a0f1a; }
+  .btn-wide{ width:100%; }
+  .btn-lg{ padding:15px 26px; font-size:1rem; }
+  .menu-toggle{ display:none; background:none; border:none; color:var(--ink); }
+
+  /* ---------- BREADCRUMB ---------- */
+  .crumb{ padding:26px 0 0; font-size:0.86rem; color:var(--ink-soft); display:flex; align-items:center; gap:8px; }
+  .crumb a:hover{ color:var(--orange); }
+  .crumb span.sep{ color:var(--border); }
+  .crumb span.cur{ color:var(--ink); font-weight:600; }
+
+  .page-head{ padding:22px 0 44px; text-align:center; }
+  .page-head h1{ font-size:2.3rem; font-weight:800; margin-bottom:12px; }
+  .page-head p{ color:var(--ink-soft); font-size:1.02rem; max-width:560px; margin:0 auto; }
+
+  /* ---------- VALUE BANNER ---------- */
+  .value-banner{ background:var(--ink); border-radius:28px; padding:56px 60px; position:relative; overflow:hidden; margin-bottom:64px; }
+  .value-banner::before{ content:''; position:absolute; width:460px; height:460px; background:radial-gradient(circle, rgba(249,115,22,0.32), transparent 65%); top:-230px; inset-inline-end:-140px; }
+  .value-banner::after{ content:''; position:absolute; width:380px; height:380px; background:radial-gradient(circle, rgba(212,175,55,0.2), transparent 65%); bottom:-200px; inset-inline-start:-120px; }
+  .value-inner{ position:relative; max-width:720px; margin:0 auto; text-align:center; }
+  .value-inner .mark{ width:44px; height:44px; margin:0 auto 22px; color:var(--amber); }
+  .value-inner p{ color:#fff; font-family:var(--font-head); font-size:1.42rem; font-weight:600; line-height:1.5; }
+  .value-inner .sub{ color:#D1D5DB; font-family:var(--font-body); font-weight:400; font-size:0.98rem; margin-top:18px; }
+
+  /* ---------- LAYOUT ---------- */
+  .pay-layout{ display:grid; grid-template-columns:1.6fr 1fr; gap:36px; align-items:start; padding-bottom:90px; }
+
+  /* order summary */
+  .order-card{ background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:28px; position:sticky; top:100px; order:2; }
+  .order-card h3{ font-size:1.05rem; font-weight:700; margin-bottom:20px; }
+  .order-product{ display:flex; gap:14px; padding-bottom:20px; border-bottom:1px dashed var(--border); margin-bottom:18px; }
+  .order-cover{ width:64px; height:64px; border-radius:12px; background:linear-gradient(135deg,var(--orange),var(--amber)); flex-shrink:0; display:flex; align-items:center; justify-content:center; color:#fff; }
+  .order-cover svg{width:26px;height:26px;}
+  .order-info .cat{ font-size:0.72rem; font-weight:700; color:var(--orange); text-transform:none; margin-bottom:4px; }
+  .order-info .name{ font-weight:700; font-size:0.96rem; line-height:1.35; }
+  .order-line{ display:flex; justify-content:space-between; font-size:0.9rem; color:var(--ink-soft); padding:8px 0; }
+  .order-total{ display:flex; justify-content:space-between; align-items:center; padding-top:14px; margin-top:6px; border-top:1px solid var(--border); }
+  .order-total .lbl{ font-weight:600; }
+  .order-total .amt{ font-family:var(--font-head); font-weight:800; font-size:1.5rem; }
+  .order-includes{ margin-top:20px; display:flex; flex-direction:column; gap:10px; }
+  .order-includes .row{ display:flex; align-items:center; gap:10px; font-size:0.86rem; color:var(--ink-soft); }
+  .order-includes .row svg{ width:15px; height:15px; color:var(--success); flex-shrink:0; }
+  .secure-note{ display:flex; align-items:center; gap:8px; margin-top:22px; padding-top:18px; border-top:1px solid var(--border); font-size:0.78rem; color:var(--ink-soft); }
+  .secure-note svg{ width:16px; height:16px; color:var(--success); flex-shrink:0; }
+
+  /* payment methods */
+  .methods{ order:1; display:flex; flex-direction:column; gap:22px; }
+  .tabs{ display:flex; gap:8px; background:var(--surface); border:1px solid var(--border); padding:5px; border-radius:14px; }
+  .tab{ flex:1; text-align:center; padding:12px; border-radius:10px; font-weight:700; font-size:0.9rem; color:var(--ink-soft); background:transparent; border:none; }
+  .tab.active{ background:#fff; color:var(--ink); box-shadow:0 4px 14px -6px rgba(17,24,39,0.15); }
+
+  .pay-card{ background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:34px; display:none; }
+  .pay-card.active{ display:block; }
+  .pay-card-head{ display:flex; align-items:center; gap:14px; margin-bottom:22px; }
+  .pay-card-head .ic{ width:46px; height:46px; border-radius:12px; background:var(--surface); display:flex; align-items:center; justify-content:center; color:var(--orange); flex-shrink:0; }
+  .pay-card-head h4{ font-size:1.12rem; font-weight:700; margin-bottom:3px; }
+  .pay-card-head p{ font-size:0.86rem; color:var(--ink-soft); }
+
+  .method-badges{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:24px; }
+  .method-badge{ display:flex; align-items:center; gap:8px; padding:9px 14px; border:1px solid var(--border); border-radius:10px; font-size:0.84rem; font-weight:600; color:var(--ink); }
+  .method-badge .sw{ width:9px; height:9px; border-radius:50%; }
+
+  .whatsapp-box{ background:var(--surface); border-radius:16px; padding:24px; margin-bottom:22px; }
+  .whatsapp-box p{ font-size:0.9rem; color:var(--ink-soft); line-height:1.6; margin-bottom:16px; }
+  .whatsapp-btn{ background:#25D366; color:#fff; }
+  .whatsapp-btn:hover{ background:#1DAE54; }
+
+  .steps-mini{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:16px; }
+  .steps-mini li{ display:flex; gap:14px; align-items:flex-start; }
+  .steps-mini .n{ width:26px; height:26px; border-radius:50%; background:var(--ink); color:#fff; font-family:var(--font-head); font-weight:800; font-size:0.78rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .steps-mini .t{ font-size:0.92rem; color:var(--ink-soft); line-height:1.5; padding-top:3px; }
+  .steps-mini .t strong{ color:var(--ink); font-weight:700; }
+
+  .intl-note{ background:var(--surface); border-inline-start:3px solid var(--blue); border-radius:0 12px 12px 0; padding:16px 18px; font-size:0.86rem; color:var(--ink-soft); line-height:1.6; margin-bottom:22px; }
+
+  /* how delivery works */
+  .delivery{ padding:0 0 90px; }
+  .delivery-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .delivery-card{ background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:30px; text-align:center; }
+  .delivery-card .num{ width:42px; height:42px; border-radius:50%; background:linear-gradient(135deg,var(--orange),var(--amber)); color:#fff; font-family:var(--font-head); font-weight:800; display:flex; align-items:center; justify-content:center; margin:0 auto 18px; }
+  .delivery-card h4{ font-size:1.02rem; font-weight:700; margin-bottom:8px; }
+  .delivery-card p{ font-size:0.88rem; color:var(--ink-soft); line-height:1.55; }
+
+  /* faq reuse */
+  .faq{ max-width:720px; margin:0 auto; }
+  .faq-item{ border-bottom:1px solid var(--border); }
+  .faq-q{ width:100%; background:none; border:none; padding:22px 4px; display:flex; align-items:center; justify-content:space-between; text-align:start; font-family:var(--font-head); font-weight:700; font-size:1.02rem; color:var(--ink); }
+  .faq-q svg{ transition:transform .2s ease; flex-shrink:0; color:var(--orange); }
+  .faq-item.open .faq-q svg{ transform:rotate(180deg); }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .25s ease; }
+  .faq-item.open .faq-a{ max-height:220px; }
+  .faq-a p{ padding:0 4px 22px; color:var(--ink-soft); font-size:0.94rem; line-height:1.65; max-width:640px; }
+
+  .section{ padding:70px 0; }
+  .sec-head{ max-width:600px; margin-bottom:44px; }
+  .sec-head.center{ margin-left:auto; margin-right:auto; text-align:center; }
+  .sec-head h2{ font-size:2rem; font-weight:800; margin-bottom:12px; }
+  .sec-head p{ color:var(--ink-soft); font-size:1rem; line-height:1.6; }
+
+  /* ---------- FOOTER ---------- */
+  footer{ padding:70px 0 30px; border-top:1px solid var(--border); }
+  .foot-top{ display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:40px; padding-bottom:44px; border-bottom:1px solid var(--border); }
+  .foot-brand p{ color:var(--ink-soft); font-size:0.9rem; line-height:1.6; margin-top:14px; max-width:280px; }
+  .foot-col h5{ font-family:var(--font-head); font-size:0.86rem; font-weight:700; margin-bottom:16px; }
+  .foot-col ul{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:11px; }
+  .foot-col a{ color:var(--ink-soft); font-size:0.9rem; }
+  .foot-col a:hover{ color:var(--orange); }
+  .foot-social{ display:flex; gap:10px; margin-top:16px; }
+  .foot-social a{ width:36px; height:36px; border-radius:50%; background:var(--surface); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; }
+  .foot-bottom{ display:flex; justify-content:space-between; align-items:center; padding-top:26px; color:var(--ink-soft); font-size:0.82rem; }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 980px){
+    .nav-links{ display:none; }
+    .menu-toggle{ display:flex; }
+    .pay-layout{ grid-template-columns:1fr; }
+    .order-card{ position:static; order:1; }
+    .methods{ order:2; }
+    .value-banner{ padding:44px 28px; }
+    .value-inner p{ font-size:1.2rem; }
+    .delivery-grid{ grid-template-columns:1fr; }
+    .foot-top{ grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width: 620px){
+    .wrap{ padding:0 20px; }
+    .page-head h1{ font-size:1.8rem; }
+    .pay-card{ padding:24px; }
+    .foot-top{ grid-template-columns:1fr; }
+    .foot-bottom{ flex-direction:column; gap:8px; text-align:center; }
+  }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <nav class="wrap">
+    <a href="mourischolar-home.html" class="brand">
+      <span class="brand-mark"><svg class="icon" viewBox="0 0 24 24"><path d="M22 10 12 4 2 10l10 6 10-6Z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></span>
+      MouriScholar
+    </a>
+    <div class="nav-links">
+      <a href="mourischolar-home.html" data-i18n="nav_home">Home</a>
+      <a href="mourischolar-products.html" data-i18n="nav_products">Products</a>
+      <a href="mourischolar-home.html#founder" data-i18n="nav_about">About</a>
+      <a href="mourischolar-home.html#faq" data-i18n="nav_faq">FAQ</a>
+    </div>
+    <div class="nav-right">
+      <div class="lang-switch" id="langSwitch">
+        <button data-lang="en" class="active">EN</button>
+        <button data-lang="fr">FR</button>
+        <button data-lang="ar">AR</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="wrap crumb">
+  <a href="mourischolar-home.html" data-i18n="nav_home">Home</a>
+  <span class="sep">/</span>
+  <a href="mourischolar-products.html" data-i18n="nav_products">Products</a>
+  <span class="sep">/</span>
+  <span class="cur" data-i18n="crumb_pay">Payment</span>
+</div>
+
+<div class="wrap page-head">
+  <h1 data-i18n="ph_h1">Complete your purchase</h1>
+  <p data-i18n="ph_sub">Choose the payment option that works for you. Every order is confirmed and delivered by a real person — not an automated system.</p>
+</div>
+
+<div class="wrap">
+  <div class="value-banner">
+    <div class="value-inner">
+      <svg class="mark icon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M9.5 4C6 4 3 7 3 11.2c0 3.4 2 5.6 4.7 5.6 1.9 0 3.3-1.4 3.3-3.2 0-1.7-1.2-3-2.9-3-.3 0-.6 0-.8.1.2-2.4 2.2-4.3 4.7-4.6L11.5 4H9.5zm10 0c-3.5 0-6.5 3-6.5 7.2 0 3.4 2 5.6 4.7 5.6 1.9 0 3.3-1.4 3.3-3.2 0-1.7-1.2-3-2.9-3-.3 0-.6 0-.8.1.2-2.4 2.2-4.3 4.7-4.6L21.5 4h-2z"/></svg>
+      <p data-i18n="vb_quote">You're not simply buying a PDF. You're getting over three years of scholarship experience, successful applications, premium templates, and direct one-on-one support.</p>
+      <p class="sub" data-i18n="vb_sub">Every guide is backed by real consultation — on WhatsApp or Google Meet — until you feel ready to apply.</p>
+    </div>
+  </div>
+</div>
+
+<main class="wrap pay-layout">
+
+  <div class="order-card">
+    <h3 data-i18n="oc_title">Order summary</h3>
+    <div class="order-product">
+      <div class="order-cover"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3 2 8l10 5 10-5-10-5Z"/><path d="M6 10.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-5.5"/></svg></div>
+      <div class="order-info">
+        <div class="cat" data-i18n="op_cat">Saudi Scholarships</div>
+        <div class="name" data-i18n="op_name">Saudi Scholarship Master Guide</div>
+      </div>
+    </div>
+    <div class="order-line"><span data-i18n="ol_price">Guide price</span><span>$19.00</span></div>
+    <div class="order-line"><span data-i18n="ol_fee">Processing fee</span><span data-i18n="ol_free">Free</span></div>
+    <div class="order-total">
+      <span class="lbl" data-i18n="ol_total">Total due</span>
+      <span class="amt">$19</span>
+    </div>
+    <div class="order-includes">
+      <div class="row"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="oi1">Complete PDF guide</span></div>
+      <div class="row"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="oi2">Editable templates</span></div>
+      <div class="row"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="oi3">WhatsApp consultation</span></div>
+      <div class="row"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="oi4">Lifetime access &amp; updates</span></div>
+    </div>
+    <div class="secure-note">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-4Z"/></svg>
+      <span data-i18n="sec_note">Every order is verified manually before delivery</span>
+    </div>
+  </div>
+
+  <div class="methods">
+    <div class="tabs">
+      <button class="tab active" data-tab="mr" data-i18n="tab_mr">Mauritania</button>
+      <button class="tab" data-tab="intl" data-i18n="tab_intl">International</button>
+    </div>
+
+    <div class="pay-card active" id="pay-mr">
+      <div class="pay-card-head">
+        <div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <div>
+          <h4 data-i18n="mr_h4">Order via WhatsApp</h4>
+          <p data-i18n="mr_p">Fastest option for customers in Mauritania</p>
+        </div>
+      </div>
+      <div class="method-badges">
+        <span class="method-badge"><span class="sw" style="background:var(--orange)"></span>Bankily</span>
+        <span class="method-badge"><span class="sw" style="background:var(--blue)"></span>Masrivi</span>
+        <span class="method-badge"><span class="sw" style="background:var(--success)"></span>Sedad</span>
+        <span class="method-badge"><span class="sw" style="background:var(--ink)"></span><span data-i18n="bank_transfer">Bank Transfer</span></span>
+      </div>
+      <div class="whatsapp-box">
+        <p data-i18n="mr_desc">Tap the button below to open WhatsApp with your order details already filled in. We'll reply with payment details for Bankily, Masrivi, Sedad, or bank transfer.</p>
+        <a href="#" id="waBtn" target="_blank" class="btn whatsapp-btn btn-wide btn-lg">
+          <svg class="icon" viewBox="0 0 24 24" style="width:19px;height:19px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span data-i18n="mr_btn">Order via WhatsApp</span>
+        </a>
+      </div>
+      <ul class="steps-mini">
+        <li><span class="n">1</span><span class="t" data-i18n="mr_s1"><strong>Send your order</strong> — the message already includes the product name and price.</span></li>
+        <li><span class="n">2</span><span class="t" data-i18n="mr_s2"><strong>Receive payment details</strong> — we reply with the Bankily, Masrivi, Sedad, or transfer info.</span></li>
+        <li><span class="n">3</span><span class="t" data-i18n="mr_s3"><strong>Send your screenshot</strong> — once paid, share proof of payment on the same chat.</span></li>
+      </ul>
+    </div>
+
+    <div class="pay-card" id="pay-intl">
+      <div class="pay-card-head">
+        <div class="ic"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div>
+        <div>
+          <h4 data-i18n="intl_h4">International payment</h4>
+          <p data-i18n="intl_p">For customers outside Mauritania</p>
+        </div>
+      </div>
+      <div class="method-badges">
+        <span class="method-badge"><span class="sw" style="background:var(--blue)"></span>PayPal</span>
+        <span class="method-badge"><span class="sw" style="background:var(--ink)"></span>Visa</span>
+        <span class="method-badge"><span class="sw" style="background:var(--orange)"></span>MasterCard</span>
+        <span class="method-badge"><span class="sw" style="background:var(--success)"></span>Wise</span>
+        <span class="method-badge"><span class="sw" style="background:var(--gold)"></span><span data-i18n="bank_transfer">Bank Transfer</span></span>
+      </div>
+      <div class="intl-note" data-i18n="intl_note">
+        Payment details (PayPal email, card link, or Wise/bank account) are sent to you directly on WhatsApp to avoid errors — every payment is confirmed by a real person before your files are delivered.
+      </div>
+      <div class="whatsapp-box">
+        <p data-i18n="intl_desc">Message us with your order and preferred method. We'll send the exact payment link or account details right away.</p>
+        <a href="#" id="waBtnIntl" target="_blank" class="btn whatsapp-btn btn-wide btn-lg">
+          <svg class="icon" viewBox="0 0 24 24" style="width:19px;height:19px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span data-i18n="intl_btn">Contact via WhatsApp</span>
+        </a>
+      </div>
+      <ul class="steps-mini">
+        <li><span class="n">1</span><span class="t" data-i18n="intl_s1"><strong>Choose your method</strong> — PayPal, card, Wise, or bank transfer.</span></li>
+        <li><span class="n">2</span><span class="t" data-i18n="intl_s2"><strong>Complete the payment</strong> — using the link or details we send you.</span></li>
+        <li><span class="n">3</span><span class="t" data-i18n="intl_s3"><strong>Send your screenshot</strong> — reply on WhatsApp and we'll deliver your files.</span></li>
+      </ul>
+    </div>
+  </div>
+</main>
+
+<section class="section alt delivery" style="background:var(--surface)">
+  <div class="wrap">
+    <div class="sec-head center" style="margin-bottom:44px;">
+      <h2 data-i18n="dv_h2">How delivery works</h2>
+      <p data-i18n="dv_sub">No accounts, no waiting in a queue — just a short, human handoff.</p>
+    </div>
+    <div class="delivery-grid">
+      <div class="delivery-card">
+        <div class="num">1</div>
+        <h4 data-i18n="dv1_h">Pay using your method</h4>
+        <p data-i18n="dv1_p">Bankily, Masrivi, Sedad, bank transfer, PayPal, card, or Wise — whichever fits you.</p>
+      </div>
+      <div class="delivery-card">
+        <div class="num">2</div>
+        <h4 data-i18n="dv2_h">Send your screenshot</h4>
+        <p data-i18n="dv2_p">Share proof of payment on WhatsApp so we can confirm your order.</p>
+      </div>
+      <div class="delivery-card">
+        <div class="num">3</div>
+        <h4 data-i18n="dv3_h">Receive your files</h4>
+        <p data-i18n="dv3_p">Your PDF guide, templates, and consultation booking link — usually within a few hours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head center">
+      <h2 data-i18n="faq_h2">Payment questions</h2>
+    </div>
+    <div class="faq" id="faqList"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <div class="brand">
+          <span class="brand-mark"><svg class="icon" viewBox="0 0 24 24"><path d="M22 10 12 4 2 10l10 6 10-6Z"/></svg></span>
+          MouriScholar
+        </div>
+        <p data-i18n="foot_desc">Your gateway to scholarships and studying abroad. Practical guides, real templates, direct support.</p>
+        <div class="foot-social">
+          <a href="#" aria-label="WhatsApp"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/></svg></a>
+          <a href="#" aria-label="Email"><svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h5 data-i18n="foot_links">Quick Links</h5>
+        <ul>
+          <li><a href="mourischolar-home.html" data-i18n="nav_home">Home</a></li>
+          <li><a href="mourischolar-products.html" data-i18n="nav_products">Products</a></li>
+          <li><a href="mourischolar-home.html#founder" data-i18n="nav_about">About</a></li>
+          <li><a href="mourischolar-home.html#faq" data-i18n="nav_faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5 data-i18n="foot_products">Products</h5>
+        <ul>
+          <li><a href="#" data-i18n="fp1">Scholarship Guides</a></li>
+          <li><a href="#" data-i18n="fp2">CV &amp; Cover Letters</a></li>
+          <li><a href="#" data-i18n="fp3">Visa Preparation</a></li>
+          <li><a href="#" data-i18n="fp4">Interview Prep</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5 data-i18n="foot_contact">Contact</h5>
+        <ul>
+          <li>WhatsApp: +222 31 70 88 35</li>
+          <li>hello@mourischolar.com</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span data-i18n="foot_copy">© 2026 MouriScholar. All rights reserved.</span>
+      <span data-i18n="foot_tag">Your Gateway to Scholarships and Studying Abroad</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------------- i18n ---------------- */
+const translations = {
+  en: {
+    nav_home:"Home", nav_products:"Products", nav_about:"About", nav_faq:"FAQ",
+    crumb_pay:"Payment",
+    ph_h1:"Complete your purchase", ph_sub:"Choose the payment option that works for you. Every order is confirmed and delivered by a real person — not an automated system.",
+    vb_quote:"You're not simply buying a PDF. You're getting over three years of scholarship experience, successful applications, premium templates, and direct one-on-one support.",
+    vb_sub:"Every guide is backed by real consultation — on WhatsApp or Google Meet — until you feel ready to apply.",
+    oc_title:"Order summary", op_cat:"Saudi Scholarships", op_name:"Saudi Scholarship Master Guide",
+    ol_price:"Guide price", ol_fee:"Processing fee", ol_free:"Free", ol_total:"Total due",
+    oi1:"Complete PDF guide", oi2:"Editable templates", oi3:"WhatsApp consultation", oi4:"Lifetime access & updates",
+    sec_note:"Every order is verified manually before delivery",
+    tab_mr:"Mauritania", tab_intl:"International", bank_transfer:"Bank Transfer",
+    mr_h4:"Order via WhatsApp", mr_p:"Fastest option for customers in Mauritania",
+    mr_desc:"Tap the button below to open WhatsApp with your order details already filled in. We'll reply with payment details for Bankily, Masrivi, Sedad, or bank transfer.",
+    mr_btn:"Order via WhatsApp",
+    mr_s1:"<strong>Send your order</strong> — the message already includes the product name and price.",
+    mr_s2:"<strong>Receive payment details</strong> — we reply with the Bankily, Masrivi, Sedad, or transfer info.",
+    mr_s3:"<strong>Send your screenshot</strong> — once paid, share proof of payment on the same chat.",
+    intl_h4:"International payment", intl_p:"For customers outside Mauritania",
+    intl_note:"Payment details (PayPal email, card link, or Wise/bank account) are sent to you directly on WhatsApp to avoid errors — every payment is confirmed by a real person before your files are delivered.",
+    intl_desc:"Message us with your order and preferred method. We'll send the exact payment link or account details right away.",
+    intl_btn:"Contact via WhatsApp",
+    intl_s1:"<strong>Choose your method</strong> — PayPal, card, Wise, or bank transfer.",
+    intl_s2:"<strong>Complete the payment</strong> — using the link or details we send you.",
+    intl_s3:"<strong>Send your screenshot</strong> — reply on WhatsApp and we'll deliver your files.",
+    dv_h2:"How delivery works", dv_sub:"No accounts, no waiting in a queue — just a short, human handoff.",
+    dv1_h:"Pay using your method", dv1_p:"Bankily, Masrivi, Sedad, bank transfer, PayPal, card, or Wise — whichever fits you.",
+    dv2_h:"Send your screenshot", dv2_p:"Share proof of payment on WhatsApp so we can confirm your order.",
+    dv3_h:"Receive your files", dv3_p:"Your PDF guide, templates, and consultation booking link — usually within a few hours.",
+    faq_h2:"Payment questions",
+    foot_desc:"Your gateway to scholarships and studying abroad. Practical guides, real templates, direct support.",
+    foot_links:"Quick Links", foot_products:"Products", foot_contact:"Contact",
+    fp1:"Scholarship Guides", fp2:"CV & Cover Letters", fp3:"Visa Preparation", fp4:"Interview Prep",
+    foot_copy:"© 2026 MouriScholar. All rights reserved.", foot_tag:"Your Gateway to Scholarships and Studying Abroad"
+  },
+  fr: {
+    nav_home:"Accueil", nav_products:"Produits", nav_about:"À propos", nav_faq:"FAQ",
+    crumb_pay:"Paiement",
+    ph_h1:"Finalisez votre achat", ph_sub:"Choisissez le moyen de paiement qui vous convient. Chaque commande est confirmée et livrée par une vraie personne — pas un système automatisé.",
+    vb_quote:"Vous n'achetez pas simplement un PDF. Vous obtenez plus de trois ans d'expérience en bourses, des candidatures réussies, des modèles premium et un accompagnement direct.",
+    vb_sub:"Chaque guide est accompagné d'une vraie consultation — par WhatsApp ou Google Meet — jusqu'à ce que vous soyez prêt à postuler.",
+    oc_title:"Résumé de la commande", op_cat:"Bourses saoudiennes", op_name:"Guide complet des bourses saoudiennes",
+    ol_price:"Prix du guide", ol_fee:"Frais de traitement", ol_free:"Gratuit", ol_total:"Total à payer",
+    oi1:"Guide PDF complet", oi2:"Modèles modifiables", oi3:"Consultation WhatsApp", oi4:"Accès et mises à jour à vie",
+    sec_note:"Chaque commande est vérifiée manuellement avant la livraison",
+    tab_mr:"Mauritanie", tab_intl:"International", bank_transfer:"Virement bancaire",
+    mr_h4:"Commander via WhatsApp", mr_p:"L'option la plus rapide pour les clients en Mauritanie",
+    mr_desc:"Appuyez sur le bouton ci-dessous pour ouvrir WhatsApp avec les détails de votre commande déjà remplis. Nous répondrons avec les informations de paiement Bankily, Masrivi, Sedad ou virement.",
+    mr_btn:"Commander via WhatsApp",
+    mr_s1:"<strong>Envoyez votre commande</strong> — le message contient déjà le nom du produit et le prix.",
+    mr_s2:"<strong>Recevez les détails de paiement</strong> — nous répondons avec les infos Bankily, Masrivi, Sedad ou virement.",
+    mr_s3:"<strong>Envoyez votre capture d'écran</strong> — une fois payé, partagez la preuve de paiement sur la même conversation.",
+    intl_h4:"Paiement international", intl_p:"Pour les clients hors de Mauritanie",
+    intl_note:"Les détails de paiement (e-mail PayPal, lien carte, ou compte Wise/bancaire) vous sont envoyés directement sur WhatsApp pour éviter les erreurs — chaque paiement est confirmé par une vraie personne avant la livraison de vos fichiers.",
+    intl_desc:"Envoyez-nous votre commande et votre méthode préférée. Nous vous enverrons immédiatement le lien de paiement ou les coordonnées exactes.",
+    intl_btn:"Contacter via WhatsApp",
+    intl_s1:"<strong>Choisissez votre méthode</strong> — PayPal, carte, Wise ou virement bancaire.",
+    intl_s2:"<strong>Effectuez le paiement</strong> — via le lien ou les détails que nous vous envoyons.",
+    intl_s3:"<strong>Envoyez votre capture d'écran</strong> — répondez sur WhatsApp et nous livrerons vos fichiers.",
+    dv_h2:"Comment fonctionne la livraison", dv_sub:"Pas de compte, pas d'attente en file — juste une remise humaine et rapide.",
+    dv1_h:"Payez avec votre méthode", dv1_p:"Bankily, Masrivi, Sedad, virement, PayPal, carte ou Wise — ce qui vous convient.",
+    dv2_h:"Envoyez votre capture d'écran", dv2_p:"Partagez la preuve de paiement sur WhatsApp pour que nous confirmions votre commande.",
+    dv3_h:"Recevez vos fichiers", dv3_p:"Votre guide PDF, vos modèles et le lien de réservation de consultation — généralement en quelques heures.",
+    faq_h2:"Questions sur le paiement",
+    foot_desc:"Votre passerelle vers les bourses et les études à l'étranger. Guides pratiques, vrais modèles, accompagnement direct.",
+    foot_links:"Liens rapides", foot_products:"Produits", foot_contact:"Contact",
+    fp1:"Guides de bourses", fp2:"CV et lettres de motivation", fp3:"Préparation visa", fp4:"Préparation entretien",
+    foot_copy:"© 2026 MouriScholar. Tous droits réservés.", foot_tag:"Votre passerelle vers les bourses et les études à l'étranger"
+  },
+  ar: {
+    nav_home:"الرئيسية", nav_products:"المنتجات", nav_about:"من نحن", nav_faq:"الأسئلة الشائعة",
+    crumb_pay:"الدفع",
+    ph_h1:"أكمل عملية الشراء", ph_sub:"اختر طريقة الدفع المناسبة لك. يتم تأكيد كل طلب وتسليمه من قِبل شخص حقيقي — وليس نظامًا آليًا.",
+    vb_quote:"أنت لا تشتري ملف PDF فقط. أنت تحصل على أكثر من ثلاث سنوات من خبرة المنح الدراسية، وطلبات ناجحة، ونماذج مميزة، ودعم مباشر.",
+    vb_sub:"كل دليل مدعوم باستشارة حقيقية — عبر واتساب أو غوغل ميت — حتى تكون جاهزًا للتقديم.",
+    oc_title:"ملخص الطلب", op_cat:"المنح السعودية", op_name:"دليل المنح السعودية الشامل",
+    ol_price:"سعر الدليل", ol_fee:"رسوم المعالجة", ol_free:"مجاني", ol_total:"المبلغ الإجمالي",
+    oi1:"دليل PDF كامل", oi2:"نماذج قابلة للتعديل", oi3:"استشارة واتساب", oi4:"وصول وتحديثات مدى الحياة",
+    sec_note:"يتم التحقق من كل طلب يدويًا قبل التسليم",
+    tab_mr:"موريتانيا", tab_intl:"دولي", bank_transfer:"تحويل بنكي",
+    mr_h4:"اطلب عبر واتساب", mr_p:"الخيار الأسرع للعملاء في موريتانيا",
+    mr_desc:"اضغط على الزر أدناه لفتح واتساب مع تفاصيل طلبك معبأة مسبقًا. سنرد بتفاصيل الدفع عبر بنكيلي أو مصرفي أو سداد أو التحويل البنكي.",
+    mr_btn:"اطلب عبر واتساب",
+    mr_s1:"<strong>أرسل طلبك</strong> — تحتوي الرسالة بالفعل على اسم المنتج والسعر.",
+    mr_s2:"<strong>استلم تفاصيل الدفع</strong> — نرد بمعلومات بنكيلي أو مصرفي أو سداد أو التحويل.",
+    mr_s3:"<strong>أرسل لقطة الشاشة</strong> — بعد الدفع، شارك إثبات الدفع في نفس المحادثة.",
+    intl_h4:"الدفع الدولي", intl_p:"للعملاء خارج موريتانيا",
+    intl_note:"يتم إرسال تفاصيل الدفع (بريد PayPal أو رابط البطاقة أو حساب Wise/البنك) مباشرة عبر واتساب لتجنب الأخطاء — يتم تأكيد كل دفعة من قِبل شخص حقيقي قبل تسليم ملفاتك.",
+    intl_desc:"راسلنا بطلبك وطريقتك المفضلة. سنرسل لك رابط الدفع أو التفاصيل الدقيقة فورًا.",
+    intl_btn:"تواصل عبر واتساب",
+    intl_s1:"<strong>اختر طريقتك</strong> — PayPal أو بطاقة أو Wise أو تحويل بنكي.",
+    intl_s2:"<strong>أكمل الدفع</strong> — باستخدام الرابط أو التفاصيل التي نرسلها لك.",
+    intl_s3:"<strong>أرسل لقطة الشاشة</strong> — رد عبر واتساب وسنقوم بتسليم ملفاتك.",
+    dv_h2:"كيف تتم عملية التسليم", dv_sub:"بدون حسابات، بدون انتظار في طابور — فقط تسليم بشري سريع.",
+    dv1_h:"ادفع بطريقتك", dv1_p:"بنكيلي أو مصرفي أو سداد أو تحويل بنكي أو PayPal أو بطاقة أو Wise — أيًا كان ما يناسبك.",
+    dv2_h:"أرسل لقطة الشاشة", dv2_p:"شارك إثبات الدفع عبر واتساب حتى نؤكد طلبك.",
+    dv3_h:"استلم ملفاتك", dv3_p:"دليل PDF ونماذجك ورابط حجز الاستشارة — عادة خلال بضع ساعات.",
+    faq_h2:"أسئلة حول الدفع",
+    foot_desc:"بوابتك إلى المنح الدراسية والدراسة في الخارج. أدلة عملية، نماذج حقيقية، دعم مباشر.",
+    foot_links:"روابط سريعة", foot_products:"المنتجات", foot_contact:"تواصل معنا",
+    fp1:"أدلة المنح", fp2:"السيرة الذاتية وخطابات الدافع", fp3:"تحضير التأشيرة", fp4:"تحضير المقابلة",
+    foot_copy:"© 2026 مواريسكولار. جميع الحقوق محفوظة.", foot_tag:"بوابتك إلى المنح الدراسية والدراسة في الخارج"
+  }
+};
+
+function applyLang(lang){
+  const dict = translations[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.dataset.i18n;
+    if(dict[key] !== undefined) el.innerHTML = dict[key];
+  });
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.body.classList.toggle('lang-ar', lang === 'ar');
+  document.querySelectorAll('#langSwitch button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+  renderFaq(lang);
+  buildWhatsappLinks();
+}
+document.getElementById('langSwitch').addEventListener('click', e=>{
+  const btn = e.target.closest('button');
+  if(btn) applyLang(btn.dataset.lang);
+});
+
+/* ---------------- Tabs ---------------- */
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.pay-card').forEach(c=>c.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('pay-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+/* ---------------- WhatsApp prefilled link ---------------- */
+function buildWhatsappLinks(){
+  const productName = document.querySelector('[data-i18n="op_name"]').textContent;
+  const price = "$19";
+  const messageMr = `Hello,\nI would like to purchase:\n${productName}\nPrice: ${price}\nI would like to pay using: Bankily / Masrivi / Sedad / Bank Transfer\nPlease send me the payment details.\nAfter payment I will send you the screenshot.\nThank you.`;
+  const messageIntl = `Hello,\nI would like to purchase:\n${productName}\nPrice: ${price}\nI would like to pay using: PayPal / Card / Wise / Bank Transfer\nPlease send me the payment details.\nAfter payment I will send you the screenshot.\nThank you.`;
+  document.getElementById('waBtn').href = `https://wa.me/22231708835?text=${encodeURIComponent(messageMr)}`;
+  document.getElementById('waBtnIntl').href = `https://wa.me/22231708835?text=${encodeURIComponent(messageIntl)}`;
+}
+
+/* ---------------- FAQ ---------------- */
+const faqData = {
+  en: [
+    {q:"Is my payment safe if there's no online checkout?", a:"Yes. Every order is confirmed manually by a real person before delivery, so there's no risk of card details being stored or automated errors."},
+    {q:"How long does delivery take after I pay?", a:"Most orders are delivered within a few hours of sending your payment screenshot on WhatsApp."},
+    {q:"Can I pay in a currency other than USD?", a:"Yes — for Mauritanian customers we accept local currency via Bankily, Masrivi, or Sedad. International customers can use PayPal, card, or Wise."},
+    {q:"What if I made a mistake in my order?", a:"Just message us on WhatsApp before or after payment — every order is reviewed by hand, so corrections are simple."}
+  ],
+  fr: [
+    {q:"Mon paiement est-il sécurisé sans caisse en ligne ?", a:"Oui. Chaque commande est confirmée manuellement par une vraie personne avant la livraison, il n'y a donc aucun risque de stockage de données bancaires ou d'erreur automatisée."},
+    {q:"Combien de temps prend la livraison après le paiement ?", a:"La plupart des commandes sont livrées en quelques heures après l'envoi de votre capture d'écran de paiement sur WhatsApp."},
+    {q:"Puis-je payer dans une autre devise que le dollar ?", a:"Oui — pour les clients mauritaniens, nous acceptons la monnaie locale via Bankily, Masrivi ou Sedad. Les clients internationaux peuvent utiliser PayPal, carte ou Wise."},
+    {q:"Que faire si je me suis trompé dans ma commande ?", a:"Envoyez-nous simplement un message sur WhatsApp avant ou après le paiement — chaque commande est vérifiée manuellement, les corrections sont donc simples."}
+  ],
+  ar: [
+    {q:"هل دفعي آمن دون بوابة دفع إلكترونية؟", a:"نعم. يتم تأكيد كل طلب يدويًا من قِبل شخص حقيقي قبل التسليم، لذا لا يوجد خطر لتخزين بيانات البطاقة أو حدوث أخطاء آلية."},
+    {q:"كم يستغرق التسليم بعد الدفع؟", a:"يتم تسليم معظم الطلبات خلال بضع ساعات من إرسال لقطة شاشة الدفع عبر واتساب."},
+    {q:"هل يمكنني الدفع بعملة غير الدولار؟", a:"نعم — للعملاء الموريتانيين نقبل العملة المحلية عبر بنكيلي أو مصرفي أو سداد. يمكن للعملاء الدوليين استخدام PayPal أو البطاقة أو Wise."},
+    {q:"ماذا لو أخطأت في طلبي؟", a:"فقط راسلنا عبر واتساب قبل أو بعد الدفع — يتم مراجعة كل طلب يدويًا، لذا التصحيح بسيط."}
+  ]
+};
+function renderFaq(lang){
+  const list = document.getElementById('faqList');
+  list.innerHTML = '';
+  faqData[lang].forEach((item, i)=>{
+    const div = document.createElement('div');
+    div.className = 'faq-item' + (i===0 ? ' open' : '');
+    div.innerHTML = `
+      <button class="faq-q">
+        <span>${item.q}</span>
+        <svg class="icon" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="faq-a"><p>${item.a}</p></div>`;
+    div.querySelector('.faq-q').addEventListener('click', ()=>{
+      const isOpen = div.classList.contains('open');
+      list.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'));
+      if(!isOpen) div.classList.add('open');
+    });
+    list.appendChild(div);
+  });
+}
+
+/* ---------------- Sticky nav shadow ---------------- */
+window.addEventListener('scroll', ()=>{
+  document.getElementById('siteHeader').classList.toggle('scrolled', window.scrollY > 8);
+});
+
+/* ---------------- init ---------------- */
+applyLang('en');
+</script>
+</body>
+</html>

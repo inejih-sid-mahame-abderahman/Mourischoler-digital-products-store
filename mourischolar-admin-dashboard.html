@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — MouriScholar Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#111827; --ink-soft:#4B5563; --ink-2:#1c2536;
+    --surface:#F9FAFB; --border:#E5E7EB;
+    --orange:#F97316; --amber:#FB923C; --gold:#D4AF37;
+    --blue:#2563EB; --success:#22C55E; --danger:#DC2626;
+    --white:#FFFFFF;
+    --font-head:'Manrope', sans-serif; --font-body:'Inter', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; font-family:var(--font-body); color:var(--ink); background:var(--surface); -webkit-font-smoothing:antialiased; }
+  a{color:inherit; text-decoration:none;}
+  button, input, select{font-family:inherit;}
+  h1,h2,h3,h4{font-family:var(--font-head); margin:0; letter-spacing:-0.01em;}
+  p{margin:0;}
+  .icon{width:19px; height:19px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0;}
+  ::-webkit-scrollbar{ width:8px; height:8px; }
+  ::-webkit-scrollbar-thumb{ background:#374151; border-radius:8px; }
+
+  /* ---------- SHELL ---------- */
+  .shell{ display:flex; min-height:100vh; }
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar{ width:260px; flex-shrink:0; background:var(--ink); color:#fff; display:flex; flex-direction:column; padding:22px 16px; position:sticky; top:0; height:100vh; }
+  .side-brand{ display:flex; align-items:center; gap:10px; padding:8px 10px 26px; font-family:var(--font-head); font-weight:800; font-size:1.12rem; }
+  .brand-mark{ width:32px; height:32px; border-radius:9px; background:linear-gradient(140deg,var(--orange),var(--amber)); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .brand-mark svg{ width:17px; height:17px; stroke:#fff; }
+  .side-label{ font-size:0.7rem; font-weight:700; letter-spacing:0.06em; color:#6B7280; padding:16px 12px 8px; }
+  .side-nav{ display:flex; flex-direction:column; gap:3px; }
+  .side-nav a{ display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:10px; color:#9CA3AF; font-weight:600; font-size:0.89rem; transition:background .15s ease, color .15s ease; }
+  .side-nav a svg{ width:18px; height:18px; }
+  .side-nav a:hover{ background:rgba(255,255,255,0.06); color:#fff; }
+  .side-nav a.active{ background:rgba(249,115,22,0.16); color:#fff; }
+  .side-nav a.active svg{ color:var(--amber); }
+  .side-bottom{ margin-top:auto; }
+  .side-user{ display:flex; align-items:center; gap:11px; padding:14px 10px; border-top:1px solid rgba(255,255,255,0.08); margin-top:10px; }
+  .side-avatar{ width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,var(--orange),var(--gold)); display:flex; align-items:center; justify-content:center; font-family:var(--font-head); font-weight:800; font-size:0.82rem; flex-shrink:0; }
+  .side-user .name{ font-size:0.86rem; font-weight:700; }
+  .side-user .role{ font-size:0.74rem; color:#9CA3AF; }
+  .side-logout{ margin-left:auto; color:#9CA3AF; display:flex; }
+  .side-logout:hover{ color:#fff; }
+
+  /* ---------- MAIN ---------- */
+  .main{ flex:1; min-width:0; }
+  .topbar{ height:74px; background:#fff; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 32px; position:sticky; top:0; z-index:20; }
+  .topbar h1{ font-size:1.28rem; font-weight:800; }
+  .topbar .sub{ font-size:0.82rem; color:var(--ink-soft); font-weight:500; margin-top:1px; }
+  .top-right{ display:flex; align-items:center; gap:18px; }
+  .top-search{ display:flex; align-items:center; gap:9px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:9px 14px; width:260px; }
+  .top-search svg{ width:17px; height:17px; color:var(--ink-soft); }
+  .top-search input{ border:none; background:none; outline:none; font-size:0.87rem; width:100%; }
+  .icon-btn{ width:40px; height:40px; border-radius:10px; background:var(--surface); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--ink-soft); position:relative; }
+  .icon-btn .dot{ position:absolute; top:8px; right:9px; width:7px; height:7px; border-radius:50%; background:var(--orange); border:1.5px solid #fff; }
+  .top-avatar{ width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg,var(--orange),var(--gold)); display:flex; align-items:center; justify-content:center; color:#fff; font-family:var(--font-head); font-weight:800; font-size:0.8rem; }
+
+  .content{ padding:30px 32px 60px; }
+
+  /* ---------- STAT CARDS ---------- */
+  .stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-bottom:24px; }
+  .stat-card{ background:#fff; border:1px solid var(--border); border-radius:16px; padding:22px; }
+  .stat-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+  .stat-ic{ width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; }
+  .stat-delta{ font-size:0.76rem; font-weight:700; padding:3px 8px; border-radius:999px; display:flex; align-items:center; gap:3px; }
+  .stat-delta.up{ background:rgba(34,197,94,0.12); color:#16A34A; }
+  .stat-delta.down{ background:rgba(220,38,38,0.1); color:var(--danger); }
+  .stat-delta svg{ width:12px; height:12px; }
+  .stat-val{ font-family:var(--font-head); font-size:1.62rem; font-weight:800; margin-bottom:4px; }
+  .stat-lbl{ font-size:0.83rem; color:var(--ink-soft); font-weight:500; }
+
+  .stats-grid-sm{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-bottom:28px; }
+  .mini-card{ background:#fff; border:1px solid var(--border); border-radius:16px; padding:20px 22px; display:flex; align-items:center; gap:14px; }
+  .mini-ic{ width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .mini-val{ font-family:var(--font-head); font-weight:800; font-size:1.26rem; }
+  .mini-lbl{ font-size:0.8rem; color:var(--ink-soft); }
+
+  /* ---------- CHART ROW ---------- */
+  .row-2{ display:grid; grid-template-columns:1.6fr 1fr; gap:18px; margin-bottom:28px; }
+  .panel{ background:#fff; border:1px solid var(--border); border-radius:16px; padding:24px; }
+  .panel-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+  .panel-head h3{ font-size:1rem; font-weight:700; }
+  .panel-head .tag{ font-size:0.78rem; color:var(--ink-soft); background:var(--surface); border:1px solid var(--border); padding:5px 11px; border-radius:999px; font-weight:600; }
+
+  /* bar chart */
+  .bars{ display:flex; align-items:flex-end; gap:14px; height:190px; padding-top:10px; }
+  .bar-col{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; gap:8px; }
+  .bar{ width:100%; max-width:34px; border-radius:8px 8px 3px 3px; background:linear-gradient(180deg,var(--amber),var(--orange)); position:relative; transition:opacity .15s; }
+  .bar.light{ background:var(--surface); border:1px solid var(--border); }
+  .bar-col .m{ font-size:0.72rem; color:var(--ink-soft); font-weight:600; }
+  .bar-col:hover .bar{ opacity:0.85; }
+
+  /* donut */
+  .donut-wrap{ display:flex; align-items:center; gap:22px; }
+  .donut{ width:132px; height:132px; border-radius:50%; flex-shrink:0; background:conic-gradient(var(--orange) 0% 46%, var(--blue) 46% 72%, var(--gold) 72% 88%, var(--border) 88% 100%); position:relative; }
+  .donut::after{ content:''; position:absolute; inset:18px; background:#fff; border-radius:50%; display:flex; }
+  .donut-center{ position:absolute; inset:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .donut-center .v{ font-family:var(--font-head); font-weight:800; font-size:1.05rem; }
+  .donut-center .l{ font-size:0.66rem; color:var(--ink-soft); }
+  .legend{ display:flex; flex-direction:column; gap:11px; }
+  .legend-item{ display:flex; align-items:center; gap:9px; font-size:0.85rem; }
+  .legend-item .sw{ width:9px; height:9px; border-radius:3px; flex-shrink:0; }
+  .legend-item .n{ font-weight:700; margin-inline-start:auto; }
+
+  /* ---------- TABLES ---------- */
+  .table-wrap{ overflow-x:auto; }
+  table{ width:100%; border-collapse:collapse; }
+  thead th{ text-align:start; font-size:0.74rem; letter-spacing:0.04em; color:var(--ink-soft); font-weight:700; padding:0 14px 12px; border-bottom:1px solid var(--border); white-space:nowrap; }
+  tbody td{ padding:14px; border-bottom:1px solid var(--border); font-size:0.87rem; vertical-align:middle; white-space:nowrap; }
+  tbody tr:last-child td{ border-bottom:none; }
+  .cell-user{ display:flex; align-items:center; gap:10px; }
+  .row-avatar{ width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-family:var(--font-head); font-weight:800; font-size:0.72rem; flex-shrink:0; }
+  .badge{ font-size:0.74rem; font-weight:700; padding:4px 10px; border-radius:999px; display:inline-block; }
+  .badge.success{ background:rgba(34,197,94,0.12); color:#16A34A; }
+  .badge.pending{ background:rgba(251,146,60,0.15); color:#C2410C; }
+  .badge.failed{ background:rgba(220,38,38,0.1); color:var(--danger); }
+  .stars-mini{ display:flex; gap:2px; color:var(--gold); }
+  .stars-mini svg{ width:12px; height:12px; }
+
+  .row-flex{ display:grid; grid-template-columns:1.4fr 1fr; gap:18px; }
+
+  .review-item{ display:flex; gap:12px; padding:14px 0; border-bottom:1px solid var(--border); }
+  .review-item:last-child{ border-bottom:none; padding-bottom:0; }
+  .review-item:first-child{ padding-top:0; }
+  .review-body{ flex:1; min-width:0; }
+  .review-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
+  .review-name{ font-weight:700; font-size:0.87rem; }
+  .review-country{ font-size:0.76rem; color:var(--ink-soft); }
+  .review-text{ font-size:0.84rem; color:var(--ink-soft); line-height:1.5; margin-top:4px; }
+
+  .view-all{ font-size:0.83rem; font-weight:700; color:var(--orange); }
+  .view-all:hover{ text-decoration:underline; }
+
+  @media (max-width: 1180px){
+    .stats-grid{ grid-template-columns:repeat(2,1fr); }
+    .stats-grid-sm{ grid-template-columns:1fr; }
+    .row-2, .row-flex{ grid-template-columns:1fr; }
+  }
+  @media (max-width: 780px){
+    .sidebar{ display:none; }
+    .top-search{ display:none; }
+    .content{ padding:22px 16px 40px; }
+    .stats-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="sidebar">
+    <a href="mourischolar-home.html" class="side-brand">
+      <span class="brand-mark"><svg class="icon" viewBox="0 0 24 24"><path d="M22 10 12 4 2 10l10 6 10-6Z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></span>
+      MouriScholar
+    </a>
+    <div class="side-label">Main</div>
+    <nav class="side-nav">
+      <a href="mourischolar-admin-dashboard.html" class="active">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        Dashboard
+      </a>
+      <a href="mourischolar-admin-products.html">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 3 2 8l10 5 10-5-10-5Z"/><path d="M6 10.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-5.5"/></svg>
+        Products
+      </a>
+      <a href="#">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+        Payments
+      </a>
+      <a href="#">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+        Statistics
+      </a>
+    </nav>
+    <div class="side-label">Content</div>
+    <nav class="side-nav">
+      <a href="#">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M9.5 4C6 4 3 7 3 11.2c0 3.4 2 5.6 4.7 5.6 1.9 0 3.3-1.4 3.3-3.2 0-1.7-1.2-3-2.9-3-.3 0-.6 0-.8.1.2-2.4 2.2-4.3 4.7-4.6L11.5 4H9.5z"/></svg>
+        Reviews
+      </a>
+      <a href="#">
+        <svg class="icon" viewBox="0 0 24 24"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.9-6.2-3.3-6.2 3.3 1.2-6.9-5-4.9 6.9-1L12 2Z"/></svg>
+        Testimonials
+      </a>
+      <a href="#">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+        Profile
+      </a>
+    </nav>
+    <div class="side-bottom">
+      <div class="side-user">
+        <div class="side-avatar">MA</div>
+        <div>
+          <div class="name">Mariem A.</div>
+          <div class="role">Administrator</div>
+        </div>
+        <a href="mourischolar-admin-login.html" class="side-logout" aria-label="Log out">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <h1>Dashboard</h1>
+        <div class="sub">Welcome back — here's how MouriScholar is doing today.</div>
+      </div>
+      <div class="top-right">
+        <div class="top-search">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Search orders, products…">
+        </div>
+        <button class="icon-btn" aria-label="Notifications"><svg class="icon" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 6 2 8 2 8H4s2-2 2-8"/><path d="M10 21a2 2 0 0 0 4 0"/></svg><span class="dot"></span></button>
+        <div class="top-avatar">MA</div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-ic" style="background:rgba(37,99,235,0.1); color:var(--blue)"><svg class="icon" viewBox="0 0 24 24" style="width:19px;height:19px"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <div class="stat-delta up"><svg viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></svg>12.4%</div>
+          </div>
+          <div class="stat-val">18,942</div>
+          <div class="stat-lbl">Visitors this month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-ic" style="background:rgba(249,115,22,0.12); color:var(--orange)"><svg class="icon" viewBox="0 0 24 24" style="width:19px;height:19px"><path d="M12 3 2 8l10 5 10-5-10-5Z"/><path d="M6 10.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-5.5"/></svg></div>
+            <div class="stat-delta up"><svg viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></svg>3</div>
+          </div>
+          <div class="stat-val">42</div>
+          <div class="stat-lbl">Active products</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-ic" style="background:rgba(34,197,94,0.12); color:var(--success)"><svg class="icon" viewBox="0 0 24 24" style="width:19px;height:19px"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+            <div class="stat-delta up"><svg viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></svg>8.1%</div>
+          </div>
+          <div class="stat-val">$6,384</div>
+          <div class="stat-lbl">Revenue this month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-ic" style="background:rgba(212,175,55,0.15); color:var(--gold)"><svg class="icon" viewBox="0 0 24 24" style="width:19px;height:19px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+            <div class="stat-delta down"><svg viewBox="0 0 24 24" style="transform:rotate(180deg)"><path d="m18 15-6-6-6 6"/></svg>4</div>
+          </div>
+          <div class="stat-val">11</div>
+          <div class="stat-lbl">Pending payments</div>
+        </div>
+      </div>
+
+      <div class="stats-grid-sm">
+        <div class="mini-card">
+          <div class="mini-ic" style="background:rgba(34,197,94,0.12); color:var(--success)"><svg class="icon" viewBox="0 0 24 24" style="width:19px;height:19px"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <div><div class="mini-val">312</div><div class="mini-lbl">Completed payments</div></div>
+        </div>
+        <div class="mini-card">
+          <div class="mini-ic" style="background:rgba(37,99,235,0.1); color:var(--blue)"><svg class="icon" viewBox="0 0 24 24" style="width:19px;height:19px"><path d="M9.5 4C6 4 3 7 3 11.2c0 3.4 2 5.6 4.7 5.6 1.9 0 3.3-1.4 3.3-3.2 0-1.7-1.2-3-2.9-3-.3 0-.6 0-.8.1.2-2.4 2.2-4.3 4.7-4.6L11.5 4H9.5z"/></svg></div>
+          <div><div class="mini-val">186</div><div class="mini-lbl">Product reviews</div></div>
+        </div>
+        <div class="mini-card">
+          <div class="mini-ic" style="background:rgba(212,175,55,0.15); color:var(--gold)"><svg class="icon" viewBox="0 0 24 24" style="width:19px;height:19px"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.9-6.2-3.3-6.2 3.3 1.2-6.9-5-4.9 6.9-1L12 2Z"/></svg></div>
+          <div><div class="mini-val">54</div><div class="mini-lbl">Testimonials</div></div>
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Revenue — last 8 months</h3>
+            <span class="tag">USD</span>
+          </div>
+          <div class="bars" id="revenueBars"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Sales by category</h3>
+          </div>
+          <div class="donut-wrap">
+            <div class="donut"><div class="donut-center"><div class="v">42</div><div class="l">products</div></div></div>
+            <div class="legend">
+              <div class="legend-item"><span class="sw" style="background:var(--orange)"></span>Scholarship guides<span class="n">46%</span></div>
+              <div class="legend-item"><span class="sw" style="background:var(--blue)"></span>Visa &amp; CV kits<span class="n">26%</span></div>
+              <div class="legend-item"><span class="sw" style="background:var(--gold)"></span>Interview prep<span class="n">16%</span></div>
+              <div class="legend-item"><span class="sw" style="background:var(--border)"></span>Other<span class="n">12%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-flex">
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Recent orders</h3>
+            <a href="#" class="view-all">View all</a>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Customer</th><th>Product</th><th>Amount</th><th>Method</th><th>Status</th><th>Date</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div class="cell-user"><div class="row-avatar" style="background:linear-gradient(135deg,#F97316,#FB923C)">AH</div>Amina H.</div></td>
+                  <td>Saudi Scholarship Guide</td>
+                  <td>$19</td>
+                  <td>Bankily</td>
+                  <td><span class="badge success">Delivered</span></td>
+                  <td>Sep 7</td>
+                </tr>
+                <tr>
+                  <td><div class="cell-user"><div class="row-avatar" style="background:linear-gradient(135deg,#2563EB,#3B82F6)">YK</div>Yacine K.</div></td>
+                  <td>PhD Application Kit</td>
+                  <td>$24</td>
+                  <td>PayPal</td>
+                  <td><span class="badge pending">Awaiting screenshot</span></td>
+                  <td>Sep 7</td>
+                </tr>
+                <tr>
+                  <td><div class="cell-user"><div class="row-avatar" style="background:linear-gradient(135deg,#111827,#374151)">SD</div>Sara D.</div></td>
+                  <td>CV &amp; Motivation Bundle</td>
+                  <td>$14</td>
+                  <td>Wise</td>
+                  <td><span class="badge success">Delivered</span></td>
+                  <td>Sep 6</td>
+                </tr>
+                <tr>
+                  <td><div class="cell-user"><div class="row-avatar" style="background:linear-gradient(135deg,#22C55E,#4ADE80)">ML</div>Mohamed L.</div></td>
+                  <td>Visa Preparation Checklist</td>
+                  <td>$9</td>
+                  <td>Masrivi</td>
+                  <td><span class="badge failed">Cancelled</span></td>
+                  <td>Sep 5</td>
+                </tr>
+                <tr>
+                  <td><div class="cell-user"><div class="row-avatar" style="background:linear-gradient(135deg,#D4AF37,#E9C766)">FT</div>Fatima T.</div></td>
+                  <td>Interview Prep Guide</td>
+                  <td>$12</td>
+                  <td>Bank Transfer</td>
+                  <td><span class="badge pending">Pending</span></td>
+                  <td>Sep 5</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Recent reviews</h3>
+            <a href="#" class="view-all">View all</a>
+          </div>
+          <div class="review-item">
+            <div class="row-avatar" style="background:linear-gradient(135deg,#F97316,#FB923C); flex-shrink:0;">AH</div>
+            <div class="review-body">
+              <div class="review-top"><span class="review-name">Amina H.</span><span class="stars-mini">★★★★★</span></div>
+              <div class="review-country">Mauritania · Saudi Scholarship Guide</div>
+              <div class="review-text">Exactly the roadmap I needed — the checklist alone was worth it.</div>
+            </div>
+          </div>
+          <div class="review-item">
+            <div class="row-avatar" style="background:linear-gradient(135deg,#2563EB,#3B82F6); flex-shrink:0;">YK</div>
+            <div class="review-body">
+              <div class="review-top"><span class="review-name">Yacine K.</span><span class="stars-mini">★★★★★</span></div>
+              <div class="review-country">Algeria · PhD Application Kit</div>
+              <div class="review-text">The WhatsApp consultation made all the difference for my proposal.</div>
+            </div>
+          </div>
+          <div class="review-item">
+            <div class="row-avatar" style="background:linear-gradient(135deg,#111827,#374151); flex-shrink:0;">SD</div>
+            <div class="review-body">
+              <div class="review-top"><span class="review-name">Sara D.</span><span class="stars-mini">★★★★☆</span></div>
+              <div class="review-country">Senegal · CV Bundle</div>
+              <div class="review-text">Great templates. Would love an Arabic version of the CV template.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:18px;">
+        <div class="panel-head">
+          <h3>Recent visitors by country</h3>
+          <a href="#" class="view-all">View all</a>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Country</th><th>Visitors</th><th>Sessions</th><th>Conversion</th></tr></thead>
+            <tbody>
+              <tr><td>🇲🇷 Mauritania</td><td>4,120</td><td>5,830</td><td><span class="badge success">6.2%</span></td></tr>
+              <tr><td>🇩🇿 Algeria</td><td>2,760</td><td>3,910</td><td><span class="badge success">4.8%</span></td></tr>
+              <tr><td>🇸🇳 Senegal</td><td>1,980</td><td>2,540</td><td><span class="badge pending">3.1%</span></td></tr>
+              <tr><td>🇲🇦 Morocco</td><td>1,540</td><td>2,010</td><td><span class="badge pending">2.9%</span></td></tr>
+              <tr><td>🇫🇷 France</td><td>1,205</td><td>1,590</td><td><span class="badge pending">2.4%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const revenue = [3.2,3.8,4.1,4.6,5.0,5.4,5.9,6.4];
+const months = ['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep'];
+const max = Math.max(...revenue);
+const barsEl = document.getElementById('revenueBars');
+revenue.forEach((v,i)=>{
+  const h = Math.round((v/max)*100);
+  const col = document.createElement('div');
+  col.className = 'bar-col';
+  col.innerHTML = `<div class="bar" style="height:${h}%" title="$${v}k"></div><div class="m">${months[i]}</div>`;
+  barsEl.appendChild(col);
+});
+</script>
+</body>
+</html>

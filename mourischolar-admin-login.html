@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login — MouriScholar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Cairo:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#111827;
+    --ink-soft:#4B5563;
+    --cream:#FDFBF6;
+    --surface:#F9FAFB;
+    --border:#E5E7EB;
+    --orange:#F97316;
+    --amber:#FB923C;
+    --gold:#D4AF37;
+    --blue:#2563EB;
+    --success:#22C55E;
+    --danger:#DC2626;
+    --white:#FFFFFF;
+    --font-head:'Manrope', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --radius:20px;
+  }
+  body.lang-ar{ --font-head:'Cairo', sans-serif; --font-body:'Cairo', sans-serif; }
+
+  *{box-sizing:border-box;}
+  body{ margin:0; font-family:var(--font-body); color:var(--ink); background:var(--cream); -webkit-font-smoothing:antialiased; }
+  a{color:inherit; text-decoration:none;}
+  button, input{font-family:inherit;}
+  h1,h2,h3{font-family:var(--font-head); margin:0; letter-spacing:-0.02em; line-height:1.15;}
+  p{margin:0;}
+  .icon{width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0;}
+
+  .lang-switch{ display:flex; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.16); border-radius:999px; padding:3px; gap:2px; }
+  .lang-switch button{ border:none; background:transparent; padding:6px 12px; border-radius:999px; font-size:0.78rem; font-weight:700; color:rgba(255,255,255,0.7); cursor:pointer; }
+  .lang-switch button.active{ background:#fff; color:var(--ink); }
+  .lang-switch.on-light{ background:var(--surface); border-color:var(--border); }
+  .lang-switch.on-light button{ color:var(--ink-soft); }
+  .lang-switch.on-light button.active{ background:var(--ink); color:#fff; }
+
+  .shell{ min-height:100vh; display:grid; grid-template-columns:1fr 1fr; }
+
+  /* ---------- LEFT: brand panel ---------- */
+  .brand-panel{
+    background:linear-gradient(160deg,#111827,#1c2536 55%, #241a12);
+    color:#fff; position:relative; overflow:hidden;
+    display:flex; flex-direction:column; justify-content:space-between;
+    padding:48px 56px;
+  }
+  .brand-panel::before{ content:''; position:absolute; width:520px; height:520px; background:radial-gradient(circle, rgba(249,115,22,0.35), transparent 65%); top:-240px; inset-inline-end:-180px; }
+  .brand-panel::after{ content:''; position:absolute; width:420px; height:420px; background:radial-gradient(circle, rgba(212,175,55,0.22), transparent 65%); bottom:-200px; inset-inline-start:-140px; }
+  .bp-top{ position:relative; display:flex; align-items:center; justify-content:space-between; }
+  .brand{ display:flex; align-items:center; gap:10px; font-family:var(--font-head); font-weight:800; font-size:1.2rem; }
+  .brand-mark{ width:36px; height:36px; border-radius:10px; background:linear-gradient(140deg,var(--orange),var(--amber)); display:flex; align-items:center; justify-content:center; }
+  .brand-mark svg{width:19px;height:19px;}
+
+  .bp-mid{ position:relative; max-width:420px; }
+  .bp-badge{ display:inline-flex; align-items:center; gap:8px; background:rgba(249,115,22,0.16); color:var(--amber); font-size:0.78rem; font-weight:700; padding:7px 14px; border-radius:999px; margin-bottom:26px; }
+  .bp-mid h1{ font-size:2.15rem; font-weight:800; margin-bottom:16px; }
+  .bp-mid p{ color:#D1D5DB; font-size:1rem; line-height:1.6; }
+
+  .bp-stats{ position:relative; display:flex; gap:34px; margin-top:44px; }
+  .bp-stats div .num{ font-family:var(--font-head); font-weight:800; font-size:1.5rem; color:var(--amber); }
+  .bp-stats div .lbl{ font-size:0.78rem; color:#9CA3AF; margin-top:2px; }
+
+  .bp-bottom{ position:relative; font-size:0.8rem; color:#9CA3AF; }
+
+  /* ---------- RIGHT: form panel ---------- */
+  .form-panel{ display:flex; align-items:center; justify-content:center; padding:48px; position:relative; }
+  .top-controls{ position:absolute; top:32px; inset-inline-end:40px; display:flex; align-items:center; gap:16px; }
+  .back-link{ font-size:0.86rem; font-weight:600; color:var(--ink-soft); display:flex; align-items:center; gap:6px; }
+  .back-link:hover{ color:var(--ink); }
+  .back-link svg{ width:16px; height:16px; }
+
+  .form-card{ width:100%; max-width:400px; }
+  .form-head{ margin-bottom:36px; }
+  .form-head .ic{ width:50px; height:50px; border-radius:14px; background:linear-gradient(140deg,var(--orange),var(--amber)); display:flex; align-items:center; justify-content:center; color:#fff; margin-bottom:22px; }
+  .form-head h2{ font-size:1.6rem; font-weight:800; margin-bottom:8px; }
+  .form-head p{ color:var(--ink-soft); font-size:0.94rem; }
+
+  .field{ margin-bottom:18px; }
+  .field label{ display:block; font-size:0.85rem; font-weight:700; margin-bottom:8px; }
+  .input-wrap{ position:relative; display:flex; align-items:center; }
+  .input-wrap svg{ position:absolute; inset-inline-start:14px; color:var(--ink-soft); width:18px; height:18px; }
+  .input-wrap input{ width:100%; padding:13px 14px 13px 42px; border:1.5px solid var(--border); border-radius:11px; font-size:0.94rem; color:var(--ink); background:#fff; outline:none; transition:border-color .15s ease, box-shadow .15s ease; }
+  html[dir="rtl"] .input-wrap input{ padding:13px 42px 13px 14px; }
+  html[dir="rtl"] .input-wrap svg{ inset-inline-start:auto; inset-inline-end:14px; }
+  .input-wrap input:focus{ border-color:var(--orange); box-shadow:0 0 0 4px rgba(249,115,22,0.12); }
+  .toggle-pass{ position:absolute; inset-inline-end:14px; background:none; border:none; color:var(--ink-soft); cursor:pointer; display:flex; }
+  html[dir="rtl"] .toggle-pass{ inset-inline-end:auto; inset-inline-start:14px; }
+
+  .field-row{ display:flex; align-items:center; justify-content:space-between; margin-bottom:26px; }
+  .remember{ display:flex; align-items:center; gap:9px; font-size:0.87rem; color:var(--ink-soft); cursor:pointer; user-select:none; }
+  .remember input{ width:17px; height:17px; accent-color:var(--orange); cursor:pointer; }
+  .forgot{ font-size:0.87rem; font-weight:600; color:var(--orange); }
+  .forgot:hover{ text-decoration:underline; }
+
+  .btn{ display:inline-flex; width:100%; align-items:center; justify-content:center; gap:8px; padding:14px 22px; border-radius:11px; font-weight:700; font-size:0.96rem; border:none; cursor:pointer; transition:transform .15s ease, box-shadow .15s ease, background .15s ease; }
+  .btn:active{ transform:scale(0.98); }
+  .btn-primary{ background:var(--orange); color:#fff; box-shadow:0 10px 24px -10px rgba(249,115,22,0.65); }
+  .btn-primary:hover{ background:#EA6A0E; }
+
+  .sec-strip{ display:flex; align-items:center; gap:8px; margin-top:26px; padding-top:22px; border-top:1px solid var(--border); font-size:0.8rem; color:var(--ink-soft); }
+  .sec-strip svg{ width:16px; height:16px; color:var(--success); flex-shrink:0; }
+
+  .error-box{ display:none; align-items:flex-start; gap:10px; background:#FEF2F2; border:1px solid #FCA5A5; color:#991B1B; padding:13px 15px; border-radius:11px; font-size:0.86rem; margin-bottom:18px; }
+  .error-box.show{ display:flex; }
+  .error-box svg{ width:17px; height:17px; flex-shrink:0; margin-top:1px; }
+
+  @media (max-width: 940px){
+    .shell{ grid-template-columns:1fr; }
+    .brand-panel{ display:none; }
+    .top-controls{ position:static; justify-content:space-between; width:100%; margin-bottom:34px; }
+    .form-panel{ padding:32px 22px; align-items:flex-start; }
+    .form-card{ max-width:none; margin:0 auto; width:100%; max-width:400px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <div class="brand-panel">
+    <div class="bp-top">
+      <a href="mourischolar-home.html" class="brand">
+        <span class="brand-mark"><svg class="icon" viewBox="0 0 24 24" style="stroke:#fff"><path d="M22 10 12 4 2 10l10 6 10-6Z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></span>
+        MouriScholar
+      </a>
+      <div class="lang-switch" id="langSwitchDark">
+        <button data-lang="en" class="active">EN</button>
+        <button data-lang="fr">FR</button>
+        <button data-lang="ar">AR</button>
+      </div>
+    </div>
+
+    <div class="bp-mid">
+      <span class="bp-badge" data-i18n="bp_badge">Restricted access</span>
+      <h1 data-i18n="bp_h1">Manage the platform that gets students into fully funded programs.</h1>
+      <p data-i18n="bp_p">Sign in to manage products, review submissions, track manual payments, and see how MouriScholar is performing — all from one dashboard.</p>
+      <div class="bp-stats">
+        <div><div class="num">2,400+</div><div class="lbl" data-i18n="bp_stat1">Students helped</div></div>
+        <div><div class="num">5,000+</div><div class="lbl" data-i18n="bp_stat2">Guides sold</div></div>
+        <div><div class="num">35</div><div class="lbl" data-i18n="bp_stat3">Countries</div></div>
+      </div>
+    </div>
+
+    <div class="bp-bottom" data-i18n="bp_bottom">© 2026 MouriScholar. Admin access only.</div>
+  </div>
+
+  <div class="form-panel">
+    <div class="top-controls">
+      <a href="mourischolar-home.html" class="back-link">
+        <svg class="icon" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        <span data-i18n="back_link">Back to site</span>
+      </a>
+      <div class="lang-switch on-light" id="langSwitchLight">
+        <button data-lang="en" class="active">EN</button>
+        <button data-lang="fr">FR</button>
+        <button data-lang="ar">AR</button>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-head">
+        <div class="ic"><svg class="icon" viewBox="0 0 24 24" style="stroke:#fff"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+        <h2 data-i18n="fh_h2">Admin sign in</h2>
+        <p data-i18n="fh_p">Enter your credentials to access the dashboard.</p>
+      </div>
+
+      <div class="error-box" id="errorBox">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+        <span data-i18n="err_msg">This is a design preview — sign-in isn't connected yet.</span>
+      </div>
+
+      <form id="loginForm">
+        <div class="field">
+          <label for="email" data-i18n="lbl_email">Email address</label>
+          <div class="input-wrap">
+            <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            <input type="email" id="email" placeholder="admin@mourischolar.com" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="password" data-i18n="lbl_pass">Password</label>
+          <div class="input-wrap">
+            <svg class="icon" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+            <input type="password" id="password" placeholder="••••••••" required>
+            <button type="button" class="toggle-pass" id="togglePass" aria-label="Show password">
+              <svg class="icon" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="field-row">
+          <label class="remember">
+            <input type="checkbox">
+            <span data-i18n="remember">Remember me</span>
+          </label>
+          <a href="#" class="forgot" data-i18n="forgot">Forgot password?</a>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <span data-i18n="btn_signin">Sign in</span>
+        </button>
+      </form>
+
+      <div class="sec-strip">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-4Z"/></svg>
+        <span data-i18n="sec_strip">This is a single-admin account — access is restricted to authorized personnel only.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const translations = {
+  en: {
+    bp_badge:"Restricted access",
+    bp_h1:"Manage the platform that gets students into fully funded programs.",
+    bp_p:"Sign in to manage products, review submissions, track manual payments, and see how MouriScholar is performing — all from one dashboard.",
+    bp_stat1:"Students helped", bp_stat2:"Guides sold", bp_stat3:"Countries",
+    bp_bottom:"© 2026 MouriScholar. Admin access only.",
+    back_link:"Back to site",
+    fh_h2:"Admin sign in", fh_p:"Enter your credentials to access the dashboard.",
+    err_msg:"This is a design preview — sign-in isn't connected yet.",
+    lbl_email:"Email address", lbl_pass:"Password",
+    remember:"Remember me", forgot:"Forgot password?", btn_signin:"Sign in",
+    sec_strip:"This is a single-admin account — access is restricted to authorized personnel only."
+  },
+  fr: {
+    bp_badge:"Accès restreint",
+    bp_h1:"Gérez la plateforme qui aide les étudiants à décrocher des programmes entièrement financés.",
+    bp_p:"Connectez-vous pour gérer les produits, examiner les avis, suivre les paiements manuels et voir les performances de MouriScholar — depuis un seul tableau de bord.",
+    bp_stat1:"Étudiants aidés", bp_stat2:"Guides vendus", bp_stat3:"Pays",
+    bp_bottom:"© 2026 MouriScholar. Accès administrateur uniquement.",
+    back_link:"Retour au site",
+    fh_h2:"Connexion administrateur", fh_p:"Entrez vos identifiants pour accéder au tableau de bord.",
+    err_msg:"Ceci est un aperçu de design — la connexion n'est pas encore active.",
+    lbl_email:"Adresse e-mail", lbl_pass:"Mot de passe",
+    remember:"Se souvenir de moi", forgot:"Mot de passe oublié ?", btn_signin:"Se connecter",
+    sec_strip:"Il s'agit d'un compte administrateur unique — l'accès est réservé au personnel autorisé."
+  },
+  ar: {
+    bp_badge:"وصول مقيد",
+    bp_h1:"أدر المنصة التي تساعد الطلاب على الالتحاق ببرامج ممولة بالكامل.",
+    bp_p:"سجّل الدخول لإدارة المنتجات، ومراجعة التقييمات، وتتبع المدفوعات اليدوية، ومتابعة أداء مواريسكولار — كل ذلك من لوحة تحكم واحدة.",
+    bp_stat1:"طالب تمت مساعدته", bp_stat2:"دليل مباع", bp_stat3:"دولة",
+    bp_bottom:"© 2026 مواريسكولار. الوصول للمسؤول فقط.",
+    back_link:"العودة إلى الموقع",
+    fh_h2:"تسجيل دخول المسؤول", fh_p:"أدخل بيانات اعتمادك للوصول إلى لوحة التحكم.",
+    err_msg:"هذه معاينة تصميم — تسجيل الدخول غير مفعّل بعد.",
+    lbl_email:"البريد الإلكتروني", lbl_pass:"كلمة المرور",
+    remember:"تذكرني", forgot:"نسيت كلمة المرور؟", btn_signin:"تسجيل الدخول",
+    sec_strip:"هذا حساب مسؤول واحد — الوصول مقتصر على الأشخاص المخوّلين فقط."
+  }
+};
+
+function applyLang(lang){
+  const dict = translations[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.dataset.i18n;
+    if(dict[key] !== undefined) el.textContent = dict[key];
+  });
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.body.classList.toggle('lang-ar', lang === 'ar');
+  document.querySelectorAll('.lang-switch button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+}
+document.getElementById('langSwitchDark').addEventListener('click', e=>{
+  const btn = e.target.closest('button'); if(btn) applyLang(btn.dataset.lang);
+});
+document.getElementById('langSwitchLight').addEventListener('click', e=>{
+  const btn = e.target.closest('button'); if(btn) applyLang(btn.dataset.lang);
+});
+
+document.getElementById('togglePass').addEventListener('click', ()=>{
+  const input = document.getElementById('password');
+  input.type = input.type === 'password' ? 'text' : 'password';
+});
+
+document.getElementById('loginForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  document.getElementById('errorBox').classList.add('show');
+});
+
+applyLang('en');
+</script>
+</body>
+</html>
